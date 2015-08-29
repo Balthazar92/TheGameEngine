@@ -53,31 +53,25 @@ public class Matrix {
     }
 
     public float get(int x, int y) throws MatrixError {
+        if (x < 0 || y < 0 || x >= getH() || y >= getW()) {
+            throw new MatrixError("Element not found");
+        }
         if (transposed) {
-            if (x < 0 || y < 0 || x >= h || y >= w) {
-                throw new MatrixError("Element not found");
-            }
             return mass[y][x];
         }
         else {
-            if (x < 0 || y < 0 || x >= w || y >= h) {
-                throw new MatrixError("Element not found");
-            }
-            else return mass[x][y];
+            return mass[x][y];
         }
     }
 
     public void set(int x, int y, float value) throws MatrixError {
+        if (x < 0 || y < 0 || x >= getH() || y >= getW()) {
+            throw new MatrixError("Wrong index");
+        }
         if (transposed) {
-            if (x < 0 || y < 0 || x >= h || y >= w) {
-                throw new MatrixError("Wrong index");
-            }
             mass[y][x] = value;
         }
         else {
-            if (x < 0 || y < 0 || x >= w || y >= h) {
-                throw new MatrixError("Wring index");
-            }
             mass[x][y] = value;
         }
     }
