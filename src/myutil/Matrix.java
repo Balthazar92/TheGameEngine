@@ -1,9 +1,9 @@
 package myutil;
 
-class MatrixError extends Exception {
+class MatrixException extends RuntimeException {
 
-    public MatrixError() {}
-    public MatrixError(String err) {
+    public MatrixException() {}
+    public MatrixException(String err) {
         super(err);
     }
 }
@@ -52,9 +52,9 @@ public class Matrix {
         }
     }
 
-    public float get(int x, int y) throws MatrixError {
+    public float get(int x, int y) throws MatrixException {
         if (x < 0 || y < 0 || x >= getH() || y >= getW()) {
-            throw new MatrixError("Element not found");
+            throw new MatrixException("Element not found");
         }
         if (transposed) {
             return mass[y][x];
@@ -64,9 +64,9 @@ public class Matrix {
         }
     }
 
-    public void set(int x, int y, float value) throws MatrixError {
+    public void set(int x, int y, float value) throws MatrixException {
         if (x < 0 || y < 0 || x >= getH() || y >= getW()) {
-            throw new MatrixError("Wrong index");
+            throw new MatrixException("Wrong index");
         }
         if (transposed) {
             mass[y][x] = value;
@@ -78,15 +78,10 @@ public class Matrix {
 
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotate = new Matrix(2, 2);
-        try {
-            rotate.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
-            rotate.set(0, 1, (-1) * (float) Math.sin(Math.toRadians(angle)));
-            rotate.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
-            rotate.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
-        }
-        catch(MatrixError e) {
-            e.printStackTrace();
-        }
+        rotate.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
+        rotate.set(0, 1, (-1) * (float) Math.sin(Math.toRadians(angle)));
+        rotate.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
+        rotate.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotate;
     }
 
