@@ -2,7 +2,7 @@ package main;
 
 import gamefield.GameField;
 import gamefield.SimpleGameContextImpl;
-import geometry.ConvexPolygon;
+import geometry.figures.ConvexPolygon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class Main
                 for (int i = 0; i < 4; i++) {
                     gameObjects.get(i).move(dCoord[i][0], dCoord[i][1]);
                 }
-                Thread.sleep(100);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

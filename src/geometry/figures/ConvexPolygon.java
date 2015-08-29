@@ -1,4 +1,4 @@
-package geometry;
+package geometry.figures;
 
 import gamefield.DrawContext;
 import gamefield.Drawable;
@@ -8,7 +8,6 @@ public class ConvexPolygon implements Drawable {
     private int verticesNumber;
     private Pair<Float, Float>[] vertices;
     private Pair<Float, Float> centerOfMass;
-
     public ConvexPolygon(float x, float y) {
         centerOfMass = new Pair<Float, Float>(x, y);
     }
