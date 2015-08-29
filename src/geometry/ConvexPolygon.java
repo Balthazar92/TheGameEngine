@@ -2,7 +2,7 @@ package geometry;
 
 import gamefield.DrawContext;
 import gamefield.Drawable;
-import myutil.Pair;
+import myutils.Pair;
 
 public class ConvexPolygon implements Drawable {
     private int verticesNumber;
