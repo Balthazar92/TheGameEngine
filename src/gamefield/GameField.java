@@ -2,27 +2,36 @@ package gamefield;
 
 import java.util.ArrayList;
 
-public class GameField {
-    private ArrayList<Drawable> objectsToDraw;
+public class GameField implements Runnable {
+    private ArrayList<Drawable> objectsToDraw = new ArrayList<Drawable>();
 
-    DrawContext drawContext;
+    DrawContext drawContext = null;
 
-    GameField(DrawContext drawContext) {
+    public GameField(DrawContext drawContext) {
         this.drawContext = drawContext;
     }
 
+    public void addGameObject(Drawable gameObject) {
+        objectsToDraw.add(gameObject);
+    }
+
     public void render() {
-        beforeRender();
+        drawContext.startRendering();
         for (Drawable objectToDraw : objectsToDraw) {
             objectToDraw.draw(drawContext);
         }
-        afterRender();
+        drawContext.endRendering();
     }
 
-    private void afterRender() {
-    }
-
-    private void beforeRender() {
-
+    @Override
+    public void run() {
+        while (true) {
+            render();
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
