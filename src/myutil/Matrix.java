@@ -72,11 +72,11 @@ public class Matrix {
     }
 
     public static Matrix getRotateMatrix(float angle) {
-        Matrix rotate = new Matrix(2, 2);
-        rotate.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
-        rotate.set(0, 1, (-1) * (float) Math.sin(Math.toRadians(angle)));
-        rotate.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
-        rotate.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
-        return rotate;
+        Matrix rotateMatrix = new Matrix(2, 2);
+        rotateMatrix.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
+        rotateMatrix.set(0, 1, (-1) * (float) Math.sin(Math.toRadians(angle)));
+        rotateMatrix.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
+        rotateMatrix.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
+        return rotateMatrix;
     }
 }
