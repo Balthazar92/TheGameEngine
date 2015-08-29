@@ -28,8 +28,7 @@ public class Matrix {
     public void transpose() {
         if (transposed) {
             transposed = false;
-        }
-        else {
+        } else {
             transposed = true;
         }
     }
@@ -37,8 +36,7 @@ public class Matrix {
     public int getW() {
         if (transposed) {
             return h;
-        }
-        else {
+        } else {
             return w;
         }
     }
@@ -46,8 +44,7 @@ public class Matrix {
     public int getH() {
         if (transposed) {
             return w;
-        }
-        else {
+        } else {
             return h;
         }
     }
@@ -58,8 +55,7 @@ public class Matrix {
         }
         if (transposed) {
             return mass[y][x];
-        }
-        else {
+        } else {
             return mass[x][y];
         }
     }
@@ -70,8 +66,7 @@ public class Matrix {
         }
         if (transposed) {
             mass[y][x] = value;
-        }
-        else {
+        } else {
             mass[x][y] = value;
         }
     }
@@ -84,5 +79,4 @@ public class Matrix {
         rotate.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotate;
     }
-
 }
