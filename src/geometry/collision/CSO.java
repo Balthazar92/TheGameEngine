@@ -1,7 +1,9 @@
 package geometry.collision;
 
-class CSO {
-    public CSO() {
+import geometry.figures.ConvexPolygon;
+
+class CSO extends ConvexPolygon {
+    CSO(ConvexPolygon p1, ConvexPolygon p2) {
 
     }
 }

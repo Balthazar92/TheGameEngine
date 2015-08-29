@@ -5,9 +5,15 @@ import gamefield.Drawable;
 import myutils.Pair;
 
 public class ConvexPolygon implements Drawable {
-    private int verticesNumber;
-    private Pair<Float, Float>[] vertices;
-    private Pair<Float, Float> centerOfMass;
+
+    protected int verticesNumber = 0;
+    protected Pair<Float, Float>[] vertices;
+    protected Pair<Float, Float> centerOfMass;
+
+    public ConvexPolygon() {
+
+    }
+
     public ConvexPolygon(float x, float y) {
         centerOfMass = new Pair<Float, Float>(x, y);
     }
