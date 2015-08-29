@@ -9,36 +9,36 @@ class MatrixError extends Exception{
 }
 
 public class Matrix {
-    float [][] mass;
-    int w, h; //размеры матрицы
-    boolean transport; //является ли матрица транспонированной
+    private float [][] mass;
+    private int w, h;
+    private boolean transposed;
 
     public Matrix(int w, int h){
         this.w = w;
         this.h = h;
-        transport = false;
+        transposed = false;
         mass = new float[w][h];
     }
 
     public int getW(){
-        if (transport) return h;
+        if (transposed) return h;
         else return w;
     }
 
     public int getH(){
-        if (transport) return w;
+        if (transposed) return w;
         else return h;
     }
 
     public float get(int x, int y) throws MatrixError{
-        if (transport)
+        if (transposed)
             if (x < 0 || y < 0 || x >= h || y >= w)
-                throw new MatrixError("Элемент не существует");
+                throw new MatrixError("Element not found");
         else
             if (x < 0 || y < 0 || x >= w || y >= h)
-                throw new MatrixError("Элемент не существует");
-        
-        if (transport) return mass[y][x];
+                throw new MatrixError("Element not found");
+
+        if (transposed) return mass[y][x];
         else return mass[x][y];
     }
 
