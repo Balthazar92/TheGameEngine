@@ -11,7 +11,6 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
 
     public SimpleGameContextImpl() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setUndecorated(true);
         setSize(800, 600);
         setVisible(true);
         createBufferStrategy(2);
@@ -28,18 +27,22 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
     }
 
     @Override
-    public void drawCircle() {
-
+    public void drawCircle(float x, float y, float r) {
+        currGraphics.drawOval((int) (x - r), (int) (y - r), (int) (2.0 * r), (int) (2.0 * r));
     }
 
     @Override
     public void startRendering() {
         bf = getBufferStrategy();
         currGraphics = bf.getDrawGraphics();
+        currGraphics.setColor(new Color(255, 255, 255));
+        currGraphics.fillRect(0, 0, getWidth(), getHeight());
+        currGraphics.setColor(new Color(0, 0, 0));
     }
 
     @Override
     public void endRendering() {
+        currGraphics.dispose();
         bf.show();
         Toolkit.getDefaultToolkit().sync();
     }

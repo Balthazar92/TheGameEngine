@@ -4,14 +4,37 @@ import gamefield.GameField;
 import gamefield.SimpleGameContextImpl;
 import geometry.ConvexPolygon;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main
 {
 
     public static void main(String args[]) {
+        List<ConvexPolygon> gameObjects = new ArrayList<ConvexPolygon>();
+        gameObjects.add(new ConvexPolygon(300, 300));
+        gameObjects.add(new ConvexPolygon(350, 300));
+        gameObjects.add(new ConvexPolygon(300, 350));
+        gameObjects.add(new ConvexPolygon(350, 350));
+
+        float dCoord[][] = {{-1.0f, -1.0f}, {1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}};
+
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
-        gameField.addGameObject(new ConvexPolygon(50));
+        gameField.setObjectsToDraw(gameObjects);
+
         Thread renderThread = new Thread(gameField);
         renderThread.start();
+
+        while(true) {
+            try {
+                for (int i = 0; i < 4; i++) {
+                    gameObjects.get(i).move(dCoord[i][0], dCoord[i][1]);
+                }
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
