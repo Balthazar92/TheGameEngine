@@ -110,6 +110,18 @@ public class Matrix {
         return lincombMatrix;
     }
 
+    public Matrix getLinearCombination(Matrix b, float c1, float c2) throws MatrixException {
+        if (this.getW() != b.getW() || this.getH() != b.getH()) {
+            throw new MatrixException("Incorrect matrix sizes");
+        }
+        for (int i = 0; i < this.getW(); i++) {
+            for (int j = 0; j < this.getH(); j++) {
+                this.set(i, j, this.get(i, j) * c1 + b.get(i, j) * c2);
+            }
+        }
+        return this;
+    }
+
     public static Matrix getIdentityMatrix(int size) {
         Matrix identityMatrix = new Matrix(size, size);
         for (int i = 0; i < identityMatrix.getW(); i++) {
@@ -120,5 +132,14 @@ public class Matrix {
             }
         }
         return identityMatrix;
+    }
+
+    public void printMatrix(){
+        for (int i = 0; i < this.getW(); i++) {
+            for (int j = 0; j < this.getH(); j++) {
+                System.out.print(this.get(i, j) + " ");
+            }
+            System.out.print("\n");
+        }
     }
 }
