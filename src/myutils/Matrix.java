@@ -25,6 +25,13 @@ public class Matrix implements Cloneable{
         }
     }
 
+    public Matrix(Matrix matrix) {
+        values = matrix.values.clone();
+        row = matrix.row;
+        col = matrix.col;
+        transposed = matrix.transposed;
+    }
+
     @Override
     public Matrix clone() throws CloneNotSupportedException {
         Matrix matrix = (Matrix)super.clone();
@@ -87,6 +94,7 @@ public class Matrix implements Cloneable{
         if (a.getCol() != b.getRow()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
+
         Matrix multMatrix = new Matrix(a.getRow(), b.getCol());
         for (int i = 0; i < multMatrix.getRow(); i++) {
             for (int j = 0; j < multMatrix.getCol(); j++) {
