@@ -9,7 +9,7 @@ class MatrixException extends RuntimeException {
 }
 
 public class Matrix implements Cloneable{
-    private float [][] mass;
+    private float[][] values;
     private int row, col;
     private boolean transposed;
 
@@ -17,10 +17,10 @@ public class Matrix implements Cloneable{
         this.row = row;
         this.col = col;
         transposed = false;
-        mass = new float[row][col];
+        values = new float[row][col];
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                mass[i][j] = 0;
+                values[i][j] = 0;
             }
         }
     }
@@ -28,7 +28,7 @@ public class Matrix implements Cloneable{
     @Override
     public Matrix clone() throws CloneNotSupportedException {
         Matrix matrix = (Matrix)super.clone();
-        matrix.mass = mass.clone();
+        matrix.values = values.clone();
         return matrix;
     }
 
@@ -57,9 +57,9 @@ public class Matrix implements Cloneable{
             throw new MatrixException("Element not found");
         }
         if (transposed) {
-            return mass[y][x];
+            return values[y][x];
         } else {
-            return mass[x][y];
+            return values[x][y];
         }
     }
 
@@ -68,16 +68,16 @@ public class Matrix implements Cloneable{
             throw new MatrixException("Wrong index");
         }
         if (transposed) {
-            mass[y][x] = value;
+            values[y][x] = value;
         } else {
-            mass[x][y] = value;
+            values[x][y] = value;
         }
     }
 
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotateMatrix = new Matrix(2, 2);
         rotateMatrix.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
-        rotateMatrix.set(0, 1, (-1) * (float) Math.sin(Math.toRadians(angle)));
+        rotateMatrix.set(0, 1, (float) - Math.sin(Math.toRadians(angle)));
         rotateMatrix.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
         rotateMatrix.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotateMatrix;
@@ -123,13 +123,13 @@ public class Matrix implements Cloneable{
         if (a.getRow() != b.getRow() || a.getCol() != b.getCol()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
-        Matrix lincombMatrix = new Matrix(a.getRow(), a.getCol());
-        for (int i = 0; i < lincombMatrix.getRow(); i++) {
-            for (int j = 0; j < lincombMatrix.getCol(); j++) {
-                lincombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
+        Matrix linCombMatrix = new Matrix(a.getRow(), a.getCol());
+        for (int i = 0; i < linCombMatrix.getRow(); i++) {
+            for (int j = 0; j < linCombMatrix.getCol(); j++) {
+                linCombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
             }
         }
-        return lincombMatrix;
+        return linCombMatrix;
     }
 
     public Matrix getLinearCombination(Matrix b, float c1, float c2) throws MatrixException {
@@ -144,25 +144,45 @@ public class Matrix implements Cloneable{
         return this;
     }
 
-    public static float scalarProduct(Matrix a, Matrix b) throws MatrixException {
-        if((a.getRow() > 1 && a.getCol() > 1) || (b.getRow() > 1 && b.getCol() > 1)) {
-            throw new MatrixException("Incorrect sizes");
+    public float get(int index) {
+        if (!isVector()) {
+            throw new MatrixException("It isn't a vector");
+        } else if (Math.max(col, row) <= index) {
+            throw new MatrixException("Wrong index");
         }
-        try {
-            Matrix vector1 = a.clone();
-            Matrix vector2 = b.clone();
-            if (a.getCol() == 1) {
-                vector1.transpose();
-            }
-            if (b.getRow() == 1) {
-                vector2.transpose();
-            }
-            return Matrix.multipl(vector1, vector2).get(0, 0);
+
+        if (row > 1) {
+            return values[index][0];
+        } else {
+            return values[0][index];
         }
-        catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
+    }
+
+    public boolean isVector() {
+        if (getRow() == 1 || getCol() == 1) {
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    public int maxOfSizes() {
+        return Math.max(col, row);
+    }
+
+    public static float getScalarProduct(Matrix a, Matrix b) throws MatrixException {
+        if(!a.isVector() || !b.isVector()) {
+            throw new MatrixException("One of participants isn't a vector");
+        } else if (a.maxOfSizes() != b.maxOfSizes()) {
+            throw new MatrixException("Incorrect vector sizes");
+        }
+
+        float scalarProduct = 0f;
+        for (int i = 0; i < a.maxOfSizes(); i++) {
+            scalarProduct += a.get(i) * b.get(i);
+        }
+
+        return scalarProduct;
     }
 
     public static Matrix getIdentityMatrix(int size) {
