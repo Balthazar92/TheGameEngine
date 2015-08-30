@@ -79,4 +79,21 @@ public class Matrix {
         rotateMatrix.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotateMatrix;
     }
+
+    public static Matrix multipl(Matrix a, Matrix b) throws MatrixException{
+        if (a.getW() != b.getH()) {
+            throw new MatrixException("Incorrect matrix sizes");
+        }
+        Matrix multMatrix = new Matrix(b.getW(), a.getH());
+        for (int i = 0; i < multMatrix.getW(); i++) {
+            for (int j = 0; j < multMatrix.getH(); j++) {
+                float value = 0.0f;
+                for (int k = 0; k < a.getW(); k++) {
+                    value += a.get(i, k) * b.get(k, j);
+                }
+                multMatrix.set(i, j, value);
+            }
+        }
+        return multMatrix;
+    }
 }
