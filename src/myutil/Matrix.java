@@ -96,4 +96,29 @@ public class Matrix {
         }
         return multMatrix;
     }
+
+    public static Matrix getLinearCombination(Matrix a, Matrix b, float c1, float c2) throws MatrixException {
+        if (a.getW() != b.getW() || a.getH() != b.getH()) {
+            throw new MatrixException("Incorrect matrix sizes");
+        }
+        Matrix lincombMatrix = new Matrix(a.getW(), a.getH());
+        for (int i = 0; i < lincombMatrix.getW(); i++) {
+            for (int j = 0; j < lincombMatrix.getH(); j++) {
+                lincombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
+            }
+        }
+        return lincombMatrix;
+    }
+
+    public static Matrix getIdentityMatrix(int size) {
+        Matrix identityMatrix = new Matrix(size, size);
+        for (int i = 0; i < identityMatrix.getW(); i++) {
+            for (int j = 0; j < identityMatrix.getH(); j++) {
+                if (i == j) {
+                    identityMatrix.set(i, j, 1.0f);
+                }
+            }
+        }
+        return identityMatrix;
+    }
 }
