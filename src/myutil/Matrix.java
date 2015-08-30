@@ -97,6 +97,25 @@ public class Matrix {
         return multMatrix;
     }
 
+    public static Matrix multipl(Matrix a, float c) {
+        Matrix multMatrix = new Matrix(a.getW(), a.getH());
+        for (int i = 0; i < multMatrix.getW(); i++) {
+            for (int j = 0; j < multMatrix.getH(); j++) {
+                multMatrix.set(i, j, a.get(i, j) * c);
+            }
+        }
+        return multMatrix;
+    }
+
+    public Matrix multipl(float c) {
+        for (int i = 0; i < this.getW(); i++) {
+            for (int j = 0; j < this.getH(); j++) {
+                this.set(i, j, this.get(i, j) * c);
+            }
+        }
+        return this;
+    }
+
     public static Matrix getLinearCombination(Matrix a, Matrix b, float c1, float c2) throws MatrixException {
         if (a.getW() != b.getW() || a.getH() != b.getH()) {
             throw new MatrixException("Incorrect matrix sizes");
