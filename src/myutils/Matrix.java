@@ -1,4 +1,4 @@
-package myutil;
+package myutils;
 
 class MatrixException extends RuntimeException {
 
@@ -31,11 +31,7 @@ public class Matrix implements Cloneable{
     }
 
     public void transpose() {
-        if (transposed) {
-            transposed = false;
-        } else {
-            transposed = true;
-        }
+        transposed = !transposed;
     }
 
     public int getRow() {
