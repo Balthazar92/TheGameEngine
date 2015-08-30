@@ -80,7 +80,7 @@ public class Matrix {
         return rotateMatrix;
     }
 
-    public static Matrix multipl(Matrix a, Matrix b) throws MatrixException{
+    public static Matrix multipl(Matrix a, Matrix b) throws MatrixException {
         if (a.getW() != b.getH()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
