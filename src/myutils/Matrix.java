@@ -27,7 +27,9 @@ public class Matrix implements Cloneable{
 
     @Override
     public Matrix clone() throws CloneNotSupportedException {
-        return (Matrix)super.clone();
+        Matrix matrix = (Matrix)super.clone();
+        matrix.mass = mass.clone();
+        return matrix;
     }
 
     public void transpose() {
