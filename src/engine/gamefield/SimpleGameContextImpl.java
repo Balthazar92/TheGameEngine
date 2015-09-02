@@ -1,4 +1,4 @@
-package gamefield;
+package engine.gamefield;
 
 import javax.swing.*;
 import java.awt.*;

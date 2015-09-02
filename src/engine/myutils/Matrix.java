@@ -1,4 +1,4 @@
-package myutils;
+package engine.myutils;
 
 class MatrixException extends RuntimeException {
 
