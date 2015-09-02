@@ -17,7 +17,7 @@ public class Matrix implements Cloneable {
 
     public Matrix(int row, int column) {
         if (row < 1 || column < 1) {
-            throw MatrixException("Initial matrix sizes is wrong");
+            throw new MatrixException("Initial matrix sizes is wrong");
         }
 
         this.row = row;
