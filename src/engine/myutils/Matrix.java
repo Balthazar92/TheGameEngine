@@ -14,6 +14,10 @@ public class Matrix implements Cloneable{
     private boolean transposed;
 
     public Matrix(int row, int column) {
+        if (row < 1 || column < 1) {
+            throw MatrixException("Initial matrix size is wrong");
+        }
+
         this.row = row;
         this.column = column;
         transposed = false;
@@ -180,7 +184,7 @@ public class Matrix implements Cloneable{
         }
     }
 
-    public boolean isVector() {
+    private boolean isVector() {
         if (getRow() == 1 || getColumn() == 1) {
             return true;
         } else {
@@ -188,7 +192,7 @@ public class Matrix implements Cloneable{
         }
     }
 
-    public boolean isCoords() {
+    private boolean isCoords() {
         if (isVector() && maxOfSizes() == 2) {
             return true;
         }
@@ -199,7 +203,6 @@ public class Matrix implements Cloneable{
         if (!isCoords()) {
             throw new MatrixException("It isn't coordinates");
         }
-
         set(0, coord1);
         set(1, coord2);
     }
