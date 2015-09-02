@@ -2,20 +2,22 @@ package engine.myutils;
 
 class MatrixException extends RuntimeException {
 
-    public MatrixException() {}
+    public MatrixException() {
+    }
+
     public MatrixException(String err) {
         super(err);
     }
 }
 
-public class Matrix implements Cloneable{
+public class Matrix implements Cloneable {
     private float[][] values;
     private int row, column;
     private boolean transposed;
 
     public Matrix(int row, int column) {
         if (row < 1 || column < 1) {
-            throw MatrixException("Initial matrix size is wrong");
+            throw MatrixException("Initial matrix sizes is wrong");
         }
 
         this.row = row;
@@ -38,7 +40,7 @@ public class Matrix implements Cloneable{
 
     @Override
     public Matrix clone() throws CloneNotSupportedException {
-        Matrix matrix = (Matrix)super.clone();
+        Matrix matrix = (Matrix) super.clone();
         matrix.values = values.clone();
         return matrix;
     }
@@ -88,7 +90,7 @@ public class Matrix implements Cloneable{
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotateMatrix = new Matrix(2, 2);
         rotateMatrix.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
-        rotateMatrix.set(0, 1, (float) - Math.sin(Math.toRadians(angle)));
+        rotateMatrix.set(0, 1, (float) -Math.sin(Math.toRadians(angle)));
         rotateMatrix.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
         rotateMatrix.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotateMatrix;
@@ -218,7 +220,7 @@ public class Matrix implements Cloneable{
     }
 
     public static float getScalarProduct(Matrix a, Matrix b) throws MatrixException {
-        if(!a.isVector() || !b.isVector()) {
+        if (!a.isVector() || !b.isVector()) {
             throw new MatrixException("One of participants isn't a vector");
         } else if (a.maxOfSizes() != b.maxOfSizes()) {
             throw new MatrixException("Incorrect vector sizes");
