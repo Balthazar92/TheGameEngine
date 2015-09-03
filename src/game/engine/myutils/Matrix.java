@@ -1,4 +1,4 @@
-package engine.myutils;
+package game.engine.myutils;
 
 class MatrixException extends RuntimeException {
 
@@ -248,13 +248,13 @@ public class Matrix implements Cloneable {
 
     @Override
     public String toString() {
-        String matrix_out = "";
+        String matrixOut = "";
         for (int i = 0; i < this.getRow(); i++) {
             for (int j = 0; j < this.getColumn(); j++) {
-                matrix_out += this.get(i, j) + " ";
+                matrixOut += this.get(i, j) + " ";
             }
-            matrix_out += "\n";
+            matrixOut += "\n";
         }
-        return matrix_out;
+        return matrixOut;
     }
 }

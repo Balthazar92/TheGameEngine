@@ -1,6 +1,6 @@
-package engine.geometry.figures;
+package game.engine.geometry.figures;
 
-import engine.myutils.Matrix;
+import game.engine.myutils.Matrix;
 
 public interface Movable {
     void move(float dx, float dy);

@@ -1,9 +1,8 @@
-package engine.geometry.figures;
+package game.engine.geometry.figures;
 
-import engine.gamefield.DrawContext;
-import engine.gamefield.Drawable;
-import engine.myutils.Matrix;
-import engine.myutils.Pair;
+import game.engine.gamefield.DrawContext;
+import game.engine.gamefield.Drawable;
+import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements Drawable, Movable {
 

@@ -1,8 +1,7 @@
-package engine;
+package test;
 
-import engine.gamefield.GameField;
-import engine.gamefield.SimpleGameContextImpl;
-import engine.geometry.figures.ConvexPolygon;
+import game.engine.gamefield.GameField;
+import game.engine.geometry.figures.ConvexPolygon;
 
 import java.util.ArrayList;
 import java.util.List;

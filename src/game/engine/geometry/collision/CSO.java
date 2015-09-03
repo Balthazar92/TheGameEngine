@@ -1,6 +1,6 @@
-package engine.geometry.collision;
+package game.engine.geometry.collision;
 
-import engine.geometry.figures.ConvexPolygon;
+import game.engine.geometry.figures.ConvexPolygon;
 
 class CSO extends ConvexPolygon {
     CSO(ConvexPolygon p1, ConvexPolygon p2) {

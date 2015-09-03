@@ -1,4 +1,6 @@
-package engine.gamefield;
+package test;
+
+import game.engine.gamefield.DrawContext;
 
 import javax.swing.*;
 import java.awt.*;
