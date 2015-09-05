@@ -12,7 +12,7 @@ class MatrixException extends RuntimeException {
 
 public class Matrix implements Cloneable {
     private float[][] values;
-    private int row, column;
+    private int rowCount, columnCount;
     private boolean transposed;
 
     public Matrix(int row, int column) {
@@ -20,8 +20,8 @@ public class Matrix implements Cloneable {
             throw new MatrixException("Initial matrix sizes is wrong");
         }
 
-        this.row = row;
-        this.column = column;
+        this.rowCount = row;
+        this.columnCount = column;
         transposed = false;
         values = new float[row][column];
         for (int i = 0; i < row; i++) {
@@ -33,8 +33,8 @@ public class Matrix implements Cloneable {
 
     public Matrix(Matrix matrix) {
         values = matrix.values.clone();
-        row = matrix.row;
-        column = matrix.column;
+        rowCount = matrix.rowCount;
+        columnCount = matrix.columnCount;
         transposed = matrix.transposed;
     }
 
@@ -49,137 +49,137 @@ public class Matrix implements Cloneable {
         transposed = !transposed;
     }
 
-    public int getRow() {
+    public int getRowCount() {
         if (transposed) {
-            return column;
+            return columnCount;
         } else {
-            return row;
+            return rowCount;
         }
     }
 
-    public int getColumn() {
+    public int getColumnCount() {
         if (transposed) {
-            return row;
+            return rowCount;
         } else {
-            return column;
+            return columnCount;
         }
     }
 
-    public float get(int x, int y) throws MatrixException {
-        if (x < 0 || y < 0 || x >= getRow() || y >= getColumn()) {
+    public float getValue(int row, int column) throws MatrixException {
+        if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
             throw new MatrixException("Element not found");
         }
         if (transposed) {
-            return values[y][x];
+            return values[column][row];
         } else {
-            return values[x][y];
+            return values[row][column];
         }
     }
 
-    public void set(int x, int y, float value) throws MatrixException {
-        if (x < 0 || y < 0 || x >= getRow() || y >= getColumn()) {
+    public void setValue(int row, int column, float value) throws MatrixException {
+        if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
             throw new MatrixException("Wrong index");
         }
         if (transposed) {
-            values[y][x] = value;
+            values[column][row] = value;
         } else {
-            values[x][y] = value;
+            values[row][column] = value;
         }
     }
 
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotateMatrix = new Matrix(2, 2);
-        rotateMatrix.set(0, 0, (float) Math.cos(Math.toRadians(angle)));
-        rotateMatrix.set(0, 1, (float) -Math.sin(Math.toRadians(angle)));
-        rotateMatrix.set(1, 0, (float) Math.sin(Math.toRadians(angle)));
-        rotateMatrix.set(1, 1, (float) Math.cos(Math.toRadians(angle)));
+        rotateMatrix.setValue(0, 0, (float) Math.cos(Math.toRadians(angle)));
+        rotateMatrix.setValue(0, 1, (float) - Math.sin(Math.toRadians(angle)));
+        rotateMatrix.setValue(1, 0, (float) Math.sin(Math.toRadians(angle)));
+        rotateMatrix.setValue(1, 1, (float) Math.cos(Math.toRadians(angle)));
         return rotateMatrix;
     }
 
-    public static Matrix multipl(Matrix a, Matrix b) throws MatrixException {
-        if (a.getColumn() != b.getRow()) {
+    public static Matrix mul(Matrix a, Matrix b) throws MatrixException {
+        if (a.getColumnCount() != b.getRowCount()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
 
-        Matrix multMatrix = new Matrix(a.getRow(), b.getColumn());
-        for (int i = 0; i < multMatrix.getRow(); i++) {
-            for (int j = 0; j < multMatrix.getColumn(); j++) {
+        Matrix mulMatrix = new Matrix(a.getRowCount(), b.getColumnCount());
+        for (int i = 0; i < mulMatrix.getRowCount(); i++) {
+            for (int j = 0; j < mulMatrix.getColumnCount(); j++) {
                 float value = 0.0f;
-                for (int k = 0; k < a.getColumn(); k++) {
-                    value += a.get(i, k) * b.get(k, j);
+                for (int k = 0; k < a.getColumnCount(); k++) {
+                    value += a.getValue(i, k) * b.getValue(k, j);
                 }
-                multMatrix.set(i, j, value);
+                mulMatrix.setValue(i, j, value);
+            }
+        }
+        return mulMatrix;
+    }
+
+    public static Matrix mul(Matrix a, float c) {
+        Matrix multMatrix = new Matrix(a.getRowCount(), a.getColumnCount());
+        for (int i = 0; i < multMatrix.getRowCount(); i++) {
+            for (int j = 0; j < multMatrix.getColumnCount(); j++) {
+                multMatrix.setValue(i, j, a.getValue(i, j) * c);
             }
         }
         return multMatrix;
     }
 
-    public static Matrix multipl(Matrix a, float c) {
-        Matrix multMatrix = new Matrix(a.getRow(), a.getColumn());
-        for (int i = 0; i < multMatrix.getRow(); i++) {
-            for (int j = 0; j < multMatrix.getColumn(); j++) {
-                multMatrix.set(i, j, a.get(i, j) * c);
-            }
-        }
-        return multMatrix;
-    }
-
-    public Matrix multipl(float c) {
-        for (int i = 0; i < this.getRow(); i++) {
-            for (int j = 0; j < this.getColumn(); j++) {
-                this.set(i, j, this.get(i, j) * c);
+    public Matrix mul(float c) {
+        for (int i = 0; i < this.getRowCount(); i++) {
+            for (int j = 0; j < this.getColumnCount(); j++) {
+                this.setValue(i, j, this.getValue(i, j) * c);
             }
         }
         return this;
     }
 
     public static Matrix getLinearCombination(Matrix a, Matrix b, float c1, float c2) throws MatrixException {
-        if (a.getRow() != b.getRow() || a.getColumn() != b.getColumn()) {
+        if (a.getRowCount() != b.getRowCount() || a.getColumnCount() != b.getColumnCount()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
-        Matrix linCombMatrix = new Matrix(a.getRow(), a.getColumn());
-        for (int i = 0; i < linCombMatrix.getRow(); i++) {
-            for (int j = 0; j < linCombMatrix.getColumn(); j++) {
-                linCombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
+        Matrix linCombMatrix = new Matrix(a.getRowCount(), a.getColumnCount());
+        for (int i = 0; i < linCombMatrix.getRowCount(); i++) {
+            for (int j = 0; j < linCombMatrix.getColumnCount(); j++) {
+                linCombMatrix.setValue(i, j, a.getValue(i, j) * c1 + b.getValue(i, j) * c2);
             }
         }
         return linCombMatrix;
     }
 
     public Matrix applyLinearCombination(Matrix b, float c1, float c2) throws MatrixException {
-        if (this.getRow() != b.getRow() || this.getColumn() != b.getColumn()) {
+        if (this.getRowCount() != b.getRowCount() || this.getColumnCount() != b.getColumnCount()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
-        for (int i = 0; i < this.getRow(); i++) {
-            for (int j = 0; j < this.getColumn(); j++) {
-                this.set(i, j, this.get(i, j) * c1 + b.get(i, j) * c2);
+        for (int i = 0; i < this.getRowCount(); i++) {
+            for (int j = 0; j < this.getColumnCount(); j++) {
+                this.setValue(i, j, this.getValue(i, j) * c1 + b.getValue(i, j) * c2);
             }
         }
         return this;
     }
 
-    public float get(int index) {
+    public float getValue(int index) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
-        } else if (Math.max(column, row) <= index) {
+        } else if (Math.max(columnCount, rowCount) <= index) {
             throw new MatrixException("Wrong index");
         }
 
-        if (row >= column) {
+        if (rowCount >= columnCount) {
             return values[index][0];
         } else {
             return values[0][index];
         }
     }
 
-    public void set(int index, float value) {
+    public void setValue(int index, float value) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
-        } else if (Math.max(column, row) <= index) {
+        } else if (Math.max(columnCount, rowCount) <= index) {
             throw new MatrixException("Wrong index");
         }
 
-        if (row >= column) {
+        if (rowCount >= columnCount) {
             values[index][0] = value;
         } else {
             values[0][index] = value;
@@ -187,7 +187,7 @@ public class Matrix implements Cloneable {
     }
 
     private boolean isVector() {
-        if (getRow() == 1 || getColumn() == 1) {
+        if (getRowCount() == 1 || getColumnCount() == 1) {
             return true;
         } else {
             return false;
@@ -205,8 +205,8 @@ public class Matrix implements Cloneable {
         if (!isCoords()) {
             throw new MatrixException("It isn't coordinates");
         }
-        set(0, coord1);
-        set(1, coord2);
+        setValue(0, coord1);
+        setValue(1, coord2);
     }
 
     public static Matrix createCoords(float coord1, float coord2) {
@@ -216,7 +216,7 @@ public class Matrix implements Cloneable {
     }
 
     public int maxOfSizes() {
-        return Math.max(column, row);
+        return Math.max(columnCount, rowCount);
     }
 
     public static float getScalarProduct(Matrix a, Matrix b) throws MatrixException {
@@ -228,7 +228,7 @@ public class Matrix implements Cloneable {
 
         float scalarProduct = 0f;
         for (int i = 0; i < a.maxOfSizes(); i++) {
-            scalarProduct += a.get(i) * b.get(i);
+            scalarProduct += a.getValue(i) * b.getValue(i);
         }
 
         return scalarProduct;
@@ -236,10 +236,10 @@ public class Matrix implements Cloneable {
 
     public static Matrix getIdentityMatrix(int size) {
         Matrix identityMatrix = new Matrix(size, size);
-        for (int i = 0; i < identityMatrix.getRow(); i++) {
-            for (int j = 0; j < identityMatrix.getColumn(); j++) {
+        for (int i = 0; i < identityMatrix.getRowCount(); i++) {
+            for (int j = 0; j < identityMatrix.getColumnCount(); j++) {
                 if (i == j) {
-                    identityMatrix.set(i, j, 1.0f);
+                    identityMatrix.setValue(i, j, 1.0f);
                 }
             }
         }
@@ -249,9 +249,9 @@ public class Matrix implements Cloneable {
     @Override
     public String toString() {
         String matrixOut = "";
-        for (int i = 0; i < this.getRow(); i++) {
-            for (int j = 0; j < this.getColumn(); j++) {
-                matrixOut += this.get(i, j) + " ";
+        for (int i = 0; i < this.getRowCount(); i++) {
+            for (int j = 0; j < this.getColumnCount(); j++) {
+                matrixOut += this.getValue(i, j) + " ";
             }
             matrixOut += "\n";
         }

@@ -14,9 +14,9 @@ public class RotateTest
     public static void main(String args[]) {
         List<ConvexPolygon> gameObjects = new ArrayList<ConvexPolygon>();
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
-        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
-        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
-        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 300, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 300, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 200, 0));
 
         float dCoord[][] = {{-1.0f, -1.0f}, {1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}};
 

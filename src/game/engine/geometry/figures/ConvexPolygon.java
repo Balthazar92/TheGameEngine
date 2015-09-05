@@ -7,7 +7,7 @@ import game.engine.myutils.Matrix;
 public class ConvexPolygon implements Drawable, Movable {
 
     protected int verticesCount;
-    protected Matrix[] vertices;
+    protected Matrix vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
     protected float angle;
 
@@ -15,11 +15,16 @@ public class ConvexPolygon implements Drawable, Movable {
 
     }
 
+    public int getVerticesCount() {
+        return verticesCount;
+    }
+
     public ConvexPolygon(float[] x, float[] y, int verticesCount) {
         this.verticesCount = verticesCount;
-        vertices = new Matrix[verticesCount];
+        vertices = new Matrix(2, verticesCount);
         for (int i = 0; i < verticesCount; i++) {
-            vertices[i] = Matrix.createCoords(x[i], y[i]);
+            vertices.setValue(0, i, x[i]);
+            vertices.setValue(1, i, y[i]);
         }
     }
 
@@ -29,6 +34,16 @@ public class ConvexPolygon implements Drawable, Movable {
 
     public void setAngle(float angle) {
 
+    }
+
+    public Matrix getRealCoords() {
+        Matrix realCoords = new Matrix(vertices.getRowCount(), vertices.getColumnCount());
+        for (int i = 0; i < vertices.getRowCount(); i++) {
+            for (int j = 0; j < vertices.getColumnCount(); j++) {
+                realCoords.setValue(i, j, vertices.getValue(i, j) + centerOfMass.getValue(i));
+            }
+        }
+        return realCoords;
     }
 
     public ConvexPolygon(float x, float y) {
@@ -48,12 +63,13 @@ public class ConvexPolygon implements Drawable, Movable {
     @Override
     public void rotate(float dAngle) {
         for (int i = 0; i < verticesCount; i++) {
-            vertices[i] = Matrix.multipl(Matrix.getRotateMatrix(dAngle), vertices[i]);
+            vertices = Matrix.mul(Matrix.getRotateMatrix(dAngle), vertices);
         }
     }
 
     @Override
     public void draw(DrawContext drawContext) {
-        drawContext.drawPolygon(vertices);
+        Matrix realCoords = getRealCoords();
+        drawContext.drawPolygon(realCoords);
     }
 }
