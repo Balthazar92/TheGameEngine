@@ -1,6 +1,7 @@
 package test;
 
 import game.engine.gamefield.DrawContext;
+import game.engine.myutils.Matrix;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,8 +25,15 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
     }
 
     @Override
-    public void drawPolygon() {
-
+    public void drawPolygon(Matrix[] coords) {
+        int coordsCount = coords.length;
+        int[] xPoints = new int[coordsCount];
+        int[] yPoints = new int[coordsCount];
+        for (int i = 0; i < coordsCount; i++) {
+            xPoints[i] = (int) coords[i].get(0) + 200;
+            yPoints[i] = (int) coords[i].get(1) + 200;
+        }
+        currGraphics.drawPolygon(xPoints, yPoints, 4);
     }
 
     @Override

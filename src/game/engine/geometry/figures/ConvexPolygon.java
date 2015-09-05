@@ -6,12 +6,28 @@ import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements Drawable, Movable {
 
-    protected int verticesNumber = 0;
+    protected int verticesCount;
     protected Matrix[] vertices;
-    protected Matrix centerOfMass;
+    protected Matrix centerOfMass = Matrix.createCoords(0, 0);
     protected float angle;
 
     public ConvexPolygon() {
+
+    }
+
+    public ConvexPolygon(float[] x, float[] y, int verticesCount) {
+        this.verticesCount = verticesCount;
+        vertices = new Matrix[verticesCount];
+        for (int i = 0; i < verticesCount; i++) {
+            vertices[i] = Matrix.createCoords(x[i], y[i]);
+        }
+    }
+
+    public void setCenterOfMass(float x, float y) {
+        centerOfMass.setCoords(x, y);
+    }
+
+    public void setAngle(float angle) {
 
     }
 
@@ -31,11 +47,13 @@ public class ConvexPolygon implements Drawable, Movable {
 
     @Override
     public void rotate(float dAngle) {
-
+        for (int i = 0; i < verticesCount; i++) {
+            vertices[i] = Matrix.multipl(Matrix.getRotateMatrix(dAngle), vertices[i]);
+        }
     }
 
     @Override
     public void draw(DrawContext drawContext) {
-        drawContext.drawCircle(centerOfMass.get(0), centerOfMass.get(1), 20);
+        drawContext.drawPolygon(vertices);
     }
 }
