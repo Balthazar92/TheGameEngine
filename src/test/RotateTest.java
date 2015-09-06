@@ -9,9 +9,12 @@ import java.util.List;
 
 public class RotateTest
 {
-
     public static void main(String args[]) {
         List<ConvexPolygon> gameObjects = new ArrayList<ConvexPolygon>();
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 300, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 300, 0));
+        gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 200, 0));
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 300, 0));
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 300, 0));
@@ -26,8 +29,8 @@ public class RotateTest
 
         while(true) {
             try {
-                for (int i = 0; i < 4; i++) {
-                    gameObjects.get(i).rotate(0.1f * (i + 1f));
+                for (int i = 0; i < 8; i++) {
+                    gameObjects.get(i).rotate(0.2f * (i + 1f));
                 }
                 Thread.sleep(20);
             } catch (InterruptedException e) {

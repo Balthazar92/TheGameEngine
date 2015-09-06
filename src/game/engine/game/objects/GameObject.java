@@ -4,24 +4,27 @@ import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
 import game.engine.geometry.figures.ConvexPolygon;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class GameObject implements Drawable {
     private ConvexPolygon shape = null;
-    private Collection<GameObject> childs = null;
+
+    protected GameObject parent = null;
+    protected AbstractList<GameObject> child = null;
 
     GameObject() {
 
     }
 
-    GameObject(ConvexPolygon shape) {
+    GameObject(ConvexPolygon shape, GameObject parent) {
         this.shape = shape;
+        this.parent = parent;
     }
 
     public void addChild(GameObject join, GameObject gameObject) {
-        if (childs == null) {
-            childs = new ArrayList<GameObject>();
+        if (child == null) {
+            child = new ArrayList<GameObject>();
         }
     }
 
@@ -31,7 +34,7 @@ public class GameObject implements Drawable {
             shape.draw(drawContext);
         }
 
-        for (GameObject gameObject : childs) {
+        for (GameObject gameObject : child) {
             gameObject.draw(drawContext);
         }
     }

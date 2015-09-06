@@ -6,6 +6,7 @@ import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements Drawable, Movable {
     protected int verticesCount;
+    protected Matrix initialVertices;
     protected Matrix vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
     protected float angle;
@@ -20,10 +21,16 @@ public class ConvexPolygon implements Drawable, Movable {
 
     public ConvexPolygon(float[] x, float[] y, int verticesCount) {
         this.verticesCount = verticesCount;
-        vertices = new Matrix(2, verticesCount);
+        initialVertices = new Matrix(2, verticesCount);
         for (int i = 0; i < verticesCount; i++) {
-            vertices.setValue(0, i, x[i]);
-            vertices.setValue(1, i, y[i]);
+            initialVertices.setValue(0, i, x[i]);
+            initialVertices.setValue(1, i, y[i]);
+        }
+
+        try {
+            vertices = initialVertices.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -43,6 +50,10 @@ public class ConvexPolygon implements Drawable, Movable {
             }
         }
         return realCoords;
+    }
+
+    public Matrix getRealCoords(int index) {
+        return getCoords(index).applyLinearCombination(centerOfMass, 1, 1);
     }
 
     public Matrix getCoords(int vertexNum) {
@@ -65,8 +76,9 @@ public class ConvexPolygon implements Drawable, Movable {
 
     @Override
     public void rotate(float dAngle) {
+        angle += dAngle;
         for (int i = 0; i < verticesCount; i++) {
-            vertices = Matrix.mul(Matrix.getRotateMatrix(dAngle), vertices);
+            vertices = Matrix.mul(Matrix.getRotateMatrix(angle), initialVertices);
         }
     }
 
