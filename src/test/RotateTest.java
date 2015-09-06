@@ -3,7 +3,6 @@ package test;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.geometry.figures.ShapeFactory;
-import game.engine.myutils.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,6 @@ public class RotateTest
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 300, 0));
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 300, 0));
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 300, 200, 0));
-
-        float dCoord[][] = {{-1.0f, -1.0f}, {1.0f, -1.0f}, {-1.0f, 1.0f}, {1.0f, 1.0f}};
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

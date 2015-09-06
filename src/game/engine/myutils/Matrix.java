@@ -246,6 +246,10 @@ public class Matrix implements Cloneable {
         return identityMatrix;
     }
 
+    public Matrix getSubMatrix(int x1, int y1, int x2, int y2) {
+        return null;
+    }
+
     @Override
     public String toString() {
         String matrixOut = "";

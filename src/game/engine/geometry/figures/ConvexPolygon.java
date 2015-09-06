@@ -5,7 +5,6 @@ import game.engine.gamefield.Drawable;
 import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements Drawable, Movable {
-
     protected int verticesCount;
     protected Matrix vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
@@ -44,6 +43,10 @@ public class ConvexPolygon implements Drawable, Movable {
             }
         }
         return realCoords;
+    }
+
+    public Matrix getCoords(int vertexNum) {
+        return Matrix.createCoords(vertices.getValue(0, vertexNum), vertices.getValue(1, vertexNum));
     }
 
     public ConvexPolygon(float x, float y) {
