@@ -51,6 +51,11 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
     }
 
     @Override
+    public void drawRect(float x1, float y1, float x2, float y2) {
+        currGraphics.drawRect((int) x1, (int) y1, (int) (x2 - x1), (int) (y2 - y1));
+    }
+
+    @Override
     public void endRendering() {
         currGraphics.dispose();
         bf.show();

@@ -1,5 +1,6 @@
 package game.engine.geometry.figures;
 
+import com.sun.prism.image.Coords;
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
 import game.engine.myutils.Matrix;
@@ -10,6 +11,8 @@ public class ConvexPolygon implements Drawable, Movable {
     protected Matrix vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
     protected float angle;
+    protected Matrix rightTopPoint = Matrix.createCoords(0, 0);
+    protected Matrix leftBottomPoint = Matrix.createCoords(0, 0);
 
     public ConvexPolygon() {
 
@@ -52,6 +55,10 @@ public class ConvexPolygon implements Drawable, Movable {
         return realCoords;
     }
 
+    public Matrix getRealCoords(Matrix coords) {
+        return Matrix.getLinearCombination(coords, centerOfMass, 1, 1);
+    }
+
     public Matrix getRealCoords(int index) {
         return getCoords(index).applyLinearCombination(centerOfMass, 1, 1);
     }
@@ -77,14 +84,33 @@ public class ConvexPolygon implements Drawable, Movable {
     @Override
     public void rotate(float dAngle) {
         angle += dAngle;
-        for (int i = 0; i < verticesCount; i++) {
-            vertices = Matrix.mul(Matrix.getRotateMatrix(angle), initialVertices);
+        vertices = Matrix.mul(Matrix.getRotateMatrix(angle), initialVertices);
+        rightTopPoint.setCoords(vertices.getValue(0, 0), vertices.getValue(1, 0));
+        leftBottomPoint.setCoords(vertices.getValue(0, 0), vertices.getValue(1, 0));
+        for (int i = 1; i < verticesCount; i++) {
+            float x = vertices.getValue(0, i);
+            float y = vertices.getValue(1, i);
+            if (x > rightTopPoint.getValue(0)) {
+                rightTopPoint.setValue(0, x);
+            } else if (y > rightTopPoint.getValue(1)) {
+                rightTopPoint.setValue(1, y);
+            } else if (x < leftBottomPoint.getValue(0)) {
+                leftBottomPoint.setValue(0, x);
+            } else if (y < leftBottomPoint.getValue(1)) {
+                leftBottomPoint.setValue(1, y);
+            }
         }
+    }
+
+    private void drawRectangle(DrawContext drawContext) {
+        Matrix a = getRealCoords(leftBottomPoint);
+        Matrix b = getRealCoords(rightTopPoint);
+        drawContext.drawRect(a.getValue(0), a.getValue(1), b.getValue(0), b.getValue(1));
     }
 
     @Override
     public void draw(DrawContext drawContext) {
-        Matrix realCoords = getRealCoords();
-        drawContext.drawPolygon(realCoords);
+        drawContext.drawPolygon(getRealCoords());
+        drawRectangle(drawContext);
     }
 }

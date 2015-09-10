@@ -4,8 +4,8 @@ import game.engine.geometry.figures.ConvexPolygon;
 
 public class Collision {
 
-    private boolean objectArePenetrated = false;
-    float penetrationDepth;
+    private boolean objectsArePenetrated = false;
+    private float penetrationDepth;
 
     public Collision() {
 
@@ -16,7 +16,7 @@ public class Collision {
     }
 
     public boolean isCollision() {
-        return objectArePenetrated;
+        return objectsArePenetrated;
     }
 
     public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
