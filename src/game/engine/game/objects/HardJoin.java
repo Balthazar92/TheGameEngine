@@ -1,6 +1,8 @@
 package game.engine.game.objects;
 
 import game.engine.myutils.Matrix;
+import test.Main;
+
 import java.util.ArrayList;
 
 public class HardJoin extends GameObject {
@@ -14,6 +16,12 @@ public class HardJoin extends GameObject {
 
     @Override
     protected void updateThisOne() {
-
+//        Matrix realCoordsOfParentJoin = Matrix.createCoords(0.0f, 0.0f);
+//        float r = polarCoordsOfParentJoinPoint.getValue(0);
+//        float phi = polarCoordsOfParentJoinPoint.getValue(1);
+//        float angle = parent.getShape().getAngle();
+//        Matrix centerOfMass = parent.getShape().getCenterOfMass();
+//        realCoordsOfParentJoin.setCoords(r * (float)Math.cos(phi + angle) + centerOfMass.getValue(0), r * (float)Math.sin(phi + angle) + centerOfMass.getValue(1));
+//        Matrix.getRotateMatrix(phi)
     }
 }

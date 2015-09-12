@@ -89,10 +89,10 @@ public class Matrix implements Cloneable {
 
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotateMatrix = new Matrix(2, 2);
-        rotateMatrix.setValue(0, 0, (float) Math.cos(Math.toRadians(angle)));
-        rotateMatrix.setValue(0, 1, (float) - Math.sin(Math.toRadians(angle)));
-        rotateMatrix.setValue(1, 0, (float) Math.sin(Math.toRadians(angle)));
-        rotateMatrix.setValue(1, 1, (float) Math.cos(Math.toRadians(angle)));
+        rotateMatrix.setValue(0, 0, (float) Math.cos(angle));
+        rotateMatrix.setValue(0, 1, (float) - Math.sin(angle));
+        rotateMatrix.setValue(1, 0, (float) Math.sin(angle));
+        rotateMatrix.setValue(1, 1, (float) Math.cos(angle));
         return rotateMatrix;
     }
 

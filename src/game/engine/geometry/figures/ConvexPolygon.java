@@ -41,8 +41,16 @@ public class ConvexPolygon implements Drawable, Movable {
         centerOfMass.setCoords(x, y);
     }
 
+    public Matrix getCenterOfMass() {
+        return centerOfMass;
+    }
+
     public void setAngle(float angle) {
 
+    }
+
+    public float getAngle() {
+        return angle;
     }
 
     public Matrix getRealCoords() {

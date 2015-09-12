@@ -31,7 +31,7 @@ public class RotateTest
         while(true) {
             try {
                 for (ConvexPolygon gameObject : gameObjects) {
-                    gameObject.rotate(0.5f);
+                    gameObject.rotate(0.01f);
                 }
                 Thread.sleep(20);
             } catch (InterruptedException e) {

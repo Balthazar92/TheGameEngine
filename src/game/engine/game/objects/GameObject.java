@@ -3,11 +3,13 @@ package game.engine.game.objects;
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
 import game.engine.geometry.figures.ConvexPolygon;
+import game.engine.geometry.figures.Movable;
+import game.engine.myutils.Matrix;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-public class GameObject implements Drawable {
+public class GameObject implements Drawable, Movable {
     protected ConvexPolygon shape = null;
 
     protected GameObject parent = null;
@@ -55,5 +57,21 @@ public class GameObject implements Drawable {
         for (GameObject gameObject : children) {
             gameObject.draw(drawContext);
         }
+    }
+
+    @Override
+    public void move(float dx, float dy) {
+
+    }
+
+    @Override
+    public void move(Matrix dCoords) {
+
+    }
+
+    @Override
+    public void rotate(float dAngle) {
+        shape.rotate(dAngle);
+        update();
     }
 }
