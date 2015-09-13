@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-class CSO {
-    CSO(ConvexPolygon p1, ConvexPolygon p2) {
+public class CSO {
+    public CSO(ConvexPolygon p1, ConvexPolygon p2) {
         Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
-            for (int vertexNumber = 0; vertexNumber < p1.getVerticesCount(); vertexNumber++) {
+            for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {
                 int firstVertex = vertexNumber;
                 int secondVertex = firstVertex + 1;
-                if (secondVertex == vertexNumber) {
+                if (secondVertex == ps[polygonNumber].getVerticesCount()) {
                     secondVertex = 0;
                 }
                 Matrix vectorCoords = ps[polygonNumber].getCoords(secondVertex)
@@ -75,7 +75,7 @@ class CSO {
         }
 
         public void addEdge(Matrix vectorCoords, int polygonNumber, int vertexNumber) {
-            vectorCoords.applyLinearCombination(vectorCoords, 1, 1);
+            this.vectorCoords.applyLinearCombination(vectorCoords, 1, 1);
             edges.add(new Pair<Integer, Integer>(polygonNumber, vertexNumber));
         }
 
