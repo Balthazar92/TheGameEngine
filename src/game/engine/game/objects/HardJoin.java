@@ -1,7 +1,6 @@
 package game.engine.game.objects;
 
 import game.engine.myutils.Matrix;
-import test.Main;
 
 import java.util.ArrayList;
 
@@ -16,12 +15,21 @@ public class HardJoin extends GameObject {
 
     @Override
     protected void updateThisOne() {
-//        Matrix realCoordsOfParentJoin = Matrix.createCoords(0.0f, 0.0f);
-//        float r = polarCoordsOfParentJoinPoint.getValue(0);
-//        float phi = polarCoordsOfParentJoinPoint.getValue(1);
-//        float angle = parent.getShape().getAngle();
-//        Matrix centerOfMass = parent.getShape().getCenterOfMass();
-//        realCoordsOfParentJoin.setCoords(r * (float)Math.cos(phi + angle) + centerOfMass.getValue(0), r * (float)Math.sin(phi + angle) + centerOfMass.getValue(1));
-//        Matrix.getRotateMatrix(phi)
+        Matrix joinCoordsInParent = Matrix.createCoords(0.0f, 0.0f);
+        float r = polarCoordsOfParentJoinPoint.getValue(0);
+        float phi = polarCoordsOfParentJoinPoint.getValue(1);
+        joinCoordsInParent.setCoords(r * (float) Math.cos(phi), r * (float) Math.sin(phi));
+        ArrayList<Matrix> centerChildCoordsInParent = new ArrayList<Matrix>();
+        int i = 0;
+        for (Matrix childCoords : polarCoordsOfChildJoinPoints) {
+            Matrix centerChildCoords = Matrix.createCoords(0.0f, 0.0f);
+            float rChild = childCoords.getValue(0);
+            float phiChild = childCoords.getValue(1);
+            float xChild = rChild * (float) Math.cos(Math.PI - anglesBetweenParentAndChild.get(i));
+            float yChild = rChild * (float) Math.sin(Math.PI - anglesBetweenParentAndChild.get(i));
+            centerChildCoords.setCoords(xChild, yChild);
+            centerChildCoordsInParent.add(Matrix.mul(Matrix.getRotateMatrix(phi), centerChildCoords).applyLinearCombination(joinCoordsInParent, 1.0f, 1.0f));
+            i++;
+        }
     }
 }
