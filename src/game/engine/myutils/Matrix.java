@@ -36,6 +36,7 @@ public class Matrix implements Cloneable {
         rowCount = matrix.rowCount;
         columnCount = matrix.columnCount;
         transposed = matrix.transposed;
+        values = values.clone();
     }
 
     @Override
