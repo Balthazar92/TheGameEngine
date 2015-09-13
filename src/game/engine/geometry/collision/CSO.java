@@ -1,5 +1,7 @@
 package game.engine.geometry.collision;
 
+import game.engine.gamefield.DrawContext;
+import game.engine.gamefield.Drawable;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
@@ -9,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CSO {
+public class CSO implements Drawable {
+    Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
-        Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
             for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {
@@ -31,6 +33,11 @@ public class CSO {
                 }
             }
         }
+    }
+
+    @Override
+    public void draw(DrawContext drawContext) {
+
     }
 
     private static class Angle implements Comparable<Angle> {
@@ -81,6 +88,10 @@ public class CSO {
 
         public Matrix getVectorCoords() {
             return vectorCoords;
+        }
+
+        public List<Pair<Integer, Integer>> getEdges() {
+            return edges;
         }
     }
 }
