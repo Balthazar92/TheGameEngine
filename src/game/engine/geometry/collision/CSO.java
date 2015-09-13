@@ -1,7 +1,5 @@
 package game.engine.geometry.collision;
 
-import game.engine.gamefield.DrawContext;
-import game.engine.gamefield.Drawable;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
@@ -11,19 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CSO implements Drawable {
-    Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
+public class CSO extends ConvexPolygon {
+    private Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
+
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
             for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {
-                int firstVertex = vertexNumber;
-                int secondVertex = firstVertex + 1;
-                if (secondVertex == ps[polygonNumber].getVerticesCount()) {
-                    secondVertex = 0;
-                }
-                Matrix vectorCoords = ps[polygonNumber].getCoords(secondVertex)
-                        .applyLinearCombination(ps[polygonNumber].getCoords(firstVertex), 1, -1);
+                int nextVertexNumber = vertexNumber + 1 == ps[polygonNumber].getVerticesCount() ? 0 : vertexNumber + 1;
+                Matrix vectorCoords = ps[polygonNumber].getCoords(nextVertexNumber)
+                        .applyLinearCombination(ps[polygonNumber].getCoords(vertexNumber), 1, -1);
                 Angle angle = new Angle(vectorCoords);
                 CSOEdge csoEdge = edges.get(angle);
                 if (csoEdge == null) {
@@ -33,11 +28,10 @@ public class CSO implements Drawable {
                 }
             }
         }
-    }
 
-    @Override
-    public void draw(DrawContext drawContext) {
+        for (CSOEdge edge : edges.values()) {
 
+        }
     }
 
     private static class Angle implements Comparable<Angle> {
@@ -55,10 +49,7 @@ public class CSO implements Drawable {
 
             Angle angle = (Angle) object;
             float diff = angle.value - value;
-            if (Math.abs(diff) < 0.01) {
-                return true;
-            }
-            return false;
+            return Math.abs(diff) < 0.01;
         }
 
         @Override
@@ -67,9 +58,9 @@ public class CSO implements Drawable {
             if (Math.abs(diff) < 0.01) {
                 return 0;
             } else if (diff < 0) {
-                return -1;
+                return 1;
             }
-            return 1;
+            return -1;
         }
     }
 
