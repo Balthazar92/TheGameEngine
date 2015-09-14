@@ -10,9 +10,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class CSO extends ConvexPolygon {
-    private Map<Angle, CSOEdge> edges = new TreeMap<Angle, CSOEdge>();
+
+    private CSOEdge[] csoEdges = null;
 
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
+        Map<Angle, CSOEdge> sortedEdges = new TreeMap<Angle, CSOEdge>();
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
             for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {
@@ -20,17 +22,18 @@ public class CSO extends ConvexPolygon {
                 Matrix vectorCoords = ps[polygonNumber].getCoords(nextVertexNumber)
                         .applyLinearCombination(ps[polygonNumber].getCoords(vertexNumber), 1, -1);
                 Angle angle = new Angle(vectorCoords);
-                CSOEdge csoEdge = edges.get(angle);
+                CSOEdge csoEdge = sortedEdges.get(angle);
                 if (csoEdge == null) {
-                    edges.put(angle, new CSOEdge(vectorCoords, polygonNumber, vertexNumber));
+                    sortedEdges.put(angle, new CSOEdge(vectorCoords, polygonNumber, vertexNumber));
                 } else {
                     csoEdge.addEdge(vectorCoords, polygonNumber, vertexNumber);
                 }
             }
         }
-
-        for (CSOEdge edge : edges.values()) {
-
+        csoEdges = new CSOEdge[sortedEdges.size()];
+        int count = 0;
+        for (CSOEdge edge : sortedEdges.values()) {
+            csoEdges[count++] = edge;
         }
     }
 

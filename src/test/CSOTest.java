@@ -9,8 +9,7 @@ import game.engine.geometry.figures.ShapeFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSOTest
-{
+public class CSOTest {
     public static void main(String args[]) {
         List<ConvexPolygon> gameObjects = new ArrayList<ConvexPolygon>();
         gameObjects.add(ShapeFactory.createRectangle(20, 300, 200, 200, 0));
@@ -22,6 +21,10 @@ public class CSOTest
 
         Thread renderThread = new Thread(gameField);
         renderThread.start();
+
+        for (ConvexPolygon gameObject : gameObjects) {
+            gameObject.rotate(0.2f);
+        }
 
         new CSO(gameObjects.get(0), gameObjects.get(1));
 
