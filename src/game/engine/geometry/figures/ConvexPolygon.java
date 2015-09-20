@@ -115,19 +115,19 @@ public class ConvexPolygon implements Drawable, Movable {
         Matrix rightTopPoint = Matrix.createCoords(Float.MIN_VALUE, Float.MIN_VALUE);
         Matrix leftBottomPoint = Matrix.createCoords(Float.MAX_VALUE, Float.MAX_VALUE);
         for (int i = 0; i < verticesCount; i++) {
-            float x = vertices[i].getValue(0);
-            float y = vertices[i].getValue(1);
-            if (x > rightTopPoint.getValue(0)) {
-                rightTopPoint.setValue(0, x);
+            float x = vertices[i].get(0);
+            float y = vertices[i].get(1);
+            if (x > rightTopPoint.get(0)) {
+                rightTopPoint.set(0, x);
             }
-            if (y > rightTopPoint.getValue(1)) {
-                rightTopPoint.setValue(1, y);
+            if (y > rightTopPoint.get(1)) {
+                rightTopPoint.set(1, y);
             }
-            if (x < leftBottomPoint.getValue(0)) {
-                leftBottomPoint.setValue(0, x);
+            if (x < leftBottomPoint.get(0)) {
+                leftBottomPoint.set(0, x);
             }
-            if (y < leftBottomPoint.getValue(1)) {
-                leftBottomPoint.setValue(1, y);
+            if (y < leftBottomPoint.get(1)) {
+                leftBottomPoint.set(1, y);
             }
         }
         this.rightTopPoint = rightTopPoint;
@@ -137,7 +137,7 @@ public class ConvexPolygon implements Drawable, Movable {
     private void drawRectangle(DrawContext drawContext) {
         Matrix a = getRealCoords(leftBottomPoint);
         Matrix b = getRealCoords(rightTopPoint);
-        drawContext.drawRect(a.getValue(0), a.getValue(1), b.getValue(0), b.getValue(1));
+        drawContext.drawRect(a.get(0), a.get(1), b.get(0), b.get(1));
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ConvexPolygon implements Drawable, Movable {
 
 //        for (int i = 0; i < verticesCount; i++) {
 //            Matrix realCoords = getRealCoords(i);
-//            drawContext.drawCircle(realCoords.getValue(0), realCoords.getValue(1), 4);
+//            drawContext.drawCircle(realCoords.get(0), realCoords.get(1), 4);
 //        }
 
         drawContext.drawPolygon(getRealCoords());

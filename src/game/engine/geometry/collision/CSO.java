@@ -9,9 +9,18 @@ import java.util.*;
 public class CSO extends ConvexPolygon {
 
     private CSOEdge[] csoEdges = null;
+    private Line[] lines = null;
 
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
         createCSO(p1, p2);
+    }
+
+    private void calculateLines() {
+        lines = new Line[verticesCount];
+        for (int vertexNumber = 0; vertexNumber < verticesCount; vertexNumber++) {
+            int nextVertexNumber = vertexNumber + 1 == verticesCount ? 0 : vertexNumber + 1;
+            lines[vertexNumber] = new Line(getRealCoords(vertexNumber), getRealCoords(nextVertexNumber));
+        }
     }
 
     private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
@@ -24,12 +33,12 @@ public class CSO extends ConvexPolygon {
         }
         calculateOuterRectangleBorders();
         setCenterOfMass(Matrix.getLinearCombination(rightTopPoint, Matrix.getLinearCombination(p1.getRightTopPoint(), p2.getRightTopPoint(), 1, 1), -1, 1));
-        setCenterOfMass(Matrix.getLinearCombination(centerOfMass, Matrix.createCoords(300f, 300f), 1, 1));
+//        setCenterOfMass(Matrix.getLinearCombination(centerOfMass, Matrix.createCoords(300f, 300f), 1, 1));
+        calculateLines();
     }
 
     private void createCSOEdges(ConvexPolygon p1, ConvexPolygon p2) {
         Map<Angle, CSOEdge> sortedEdgesMap = new TreeMap<Angle, CSOEdge>();
-//        Matrix[] coeffs = {Matrix.createCoords(1f, 1f), Matrix.createCoords(-1f, 1f)};
         float coeffs[][] = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
@@ -61,7 +70,7 @@ public class CSO extends ConvexPolygon {
         private float value;
 
         public Angle(Matrix matrix) {
-            value = (float) Math.atan2(matrix.getValue(1), matrix.getValue(0));
+            value = (float) Math.atan2(matrix.get(1), matrix.get(0));
         }
 
         @Override

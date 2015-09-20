@@ -30,8 +30,8 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
         int[] xPoints = new int[coordsCount];
         int[] yPoints = new int[coordsCount];
         for (int i = 0; i < coordsCount; i++) {
-            xPoints[i] = (int) coords[i].getValue(0);
-            yPoints[i] = (int) coords[i].getValue(1);
+            xPoints[i] = (int) coords[i].get(0);
+            yPoints[i] = (int) coords[i].get(1);
         }
         currGraphics.drawPolygon(xPoints, yPoints, coords.length);
     }

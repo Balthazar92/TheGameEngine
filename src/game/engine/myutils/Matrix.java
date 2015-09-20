@@ -71,7 +71,7 @@ public class Matrix implements Cloneable {
         }
     }
 
-    public float getValue(int row, int column) throws MatrixException {
+    public float get(int row, int column) throws MatrixException {
         if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
             throw new MatrixException("Element not found");
         }
@@ -82,7 +82,7 @@ public class Matrix implements Cloneable {
         }
     }
 
-    public void setValue(int row, int column, float value) throws MatrixException {
+    public void set(int row, int column, float value) throws MatrixException {
         if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
             throw new MatrixException("Wrong index");
         }
@@ -95,10 +95,10 @@ public class Matrix implements Cloneable {
 
     public static Matrix getRotateMatrix(float angle) {
         Matrix rotateMatrix = new Matrix(2, 2);
-        rotateMatrix.setValue(0, 0, (float) Math.cos(angle));
-        rotateMatrix.setValue(0, 1, (float) - Math.sin(angle));
-        rotateMatrix.setValue(1, 0, (float) Math.sin(angle));
-        rotateMatrix.setValue(1, 1, (float) Math.cos(angle));
+        rotateMatrix.set(0, 0, (float) Math.cos(angle));
+        rotateMatrix.set(0, 1, (float) -Math.sin(angle));
+        rotateMatrix.set(1, 0, (float) Math.sin(angle));
+        rotateMatrix.set(1, 1, (float) Math.cos(angle));
         return rotateMatrix;
     }
 
@@ -112,9 +112,9 @@ public class Matrix implements Cloneable {
             for (int j = 0; j < mulMatrix.getColumnCount(); j++) {
                 float value = 0.0f;
                 for (int k = 0; k < a.getColumnCount(); k++) {
-                    value += a.getValue(i, k) * b.getValue(k, j);
+                    value += a.get(i, k) * b.get(k, j);
                 }
-                mulMatrix.setValue(i, j, value);
+                mulMatrix.set(i, j, value);
             }
         }
         return mulMatrix;
@@ -124,7 +124,7 @@ public class Matrix implements Cloneable {
         Matrix multMatrix = new Matrix(a.getRowCount(), a.getColumnCount());
         for (int i = 0; i < multMatrix.getRowCount(); i++) {
             for (int j = 0; j < multMatrix.getColumnCount(); j++) {
-                multMatrix.setValue(i, j, a.getValue(i, j) * c);
+                multMatrix.set(i, j, a.get(i, j) * c);
             }
         }
         return multMatrix;
@@ -133,7 +133,7 @@ public class Matrix implements Cloneable {
     public Matrix mul(float c) {
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
-                this.setValue(i, j, this.getValue(i, j) * c);
+                this.set(i, j, this.get(i, j) * c);
             }
         }
         return this;
@@ -145,7 +145,7 @@ public class Matrix implements Cloneable {
         }
         for (int i = 0; i < getRowCount(); i++) {
             for (int j = 0; j < getColumnCount(); j++) {
-                setValue(i, j, getValue(i, j) * m.getValue(i, j));
+                set(i, j, get(i, j) * m.get(i, j));
             }
         }
         return this;
@@ -158,7 +158,7 @@ public class Matrix implements Cloneable {
         Matrix linCombMatrix = new Matrix(a.getRowCount(), a.getColumnCount());
         for (int i = 0; i < linCombMatrix.getRowCount(); i++) {
             for (int j = 0; j < linCombMatrix.getColumnCount(); j++) {
-                linCombMatrix.setValue(i, j, a.getValue(i, j) * c1 + b.getValue(i, j) * c2);
+                linCombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
             }
         }
         return linCombMatrix;
@@ -170,13 +170,13 @@ public class Matrix implements Cloneable {
         }
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
-                this.setValue(i, j, this.getValue(i, j) * c1 + b.getValue(i, j) * c2);
+                this.set(i, j, this.get(i, j) * c1 + b.get(i, j) * c2);
             }
         }
         return this;
     }
 
-    public float getValue(int index) {
+    public float get(int index) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
         } else if (Math.max(columnCount, rowCount) <= index) {
@@ -190,7 +190,7 @@ public class Matrix implements Cloneable {
         }
     }
 
-    public void setValue(int index, float value) {
+    public void set(int index, float value) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
         } else if (Math.max(columnCount, rowCount) <= index) {
@@ -223,8 +223,8 @@ public class Matrix implements Cloneable {
         if (!isCoords()) {
             throw new MatrixException("It isn't coordinates");
         }
-        setValue(0, coord1);
-        setValue(1, coord2);
+        set(0, coord1);
+        set(1, coord2);
     }
 
     public static Matrix createCoords(float coord1, float coord2) {
@@ -246,7 +246,7 @@ public class Matrix implements Cloneable {
 
         float scalarProduct = 0f;
         for (int i = 0; i < a.maxOfSizes(); i++) {
-            scalarProduct += a.getValue(i) * b.getValue(i);
+            scalarProduct += a.get(i) * b.get(i);
         }
 
         return scalarProduct;
@@ -257,7 +257,7 @@ public class Matrix implements Cloneable {
         for (int i = 0; i < identityMatrix.getRowCount(); i++) {
             for (int j = 0; j < identityMatrix.getColumnCount(); j++) {
                 if (i == j) {
-                    identityMatrix.setValue(i, j, 1.0f);
+                    identityMatrix.set(i, j, 1.0f);
                 }
             }
         }
@@ -273,7 +273,7 @@ public class Matrix implements Cloneable {
         String matrixOut = "";
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
-                matrixOut += this.getValue(i, j) + " ";
+                matrixOut += this.get(i, j) + " ";
             }
             matrixOut += "\n";
         }
