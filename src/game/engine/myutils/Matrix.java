@@ -32,11 +32,15 @@ public class Matrix implements Cloneable {
     }
 
     public Matrix(Matrix matrix) {
-        values = matrix.values.clone();
         rowCount = matrix.rowCount;
         columnCount = matrix.columnCount;
         transposed = matrix.transposed;
-        values = values.clone();
+        values = new float[rowCount][columnCount];
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                values[i][j] = matrix.values[i][j];
+            }
+        }
     }
 
     @Override
@@ -130,6 +134,18 @@ public class Matrix implements Cloneable {
         for (int i = 0; i < this.getRowCount(); i++) {
             for (int j = 0; j < this.getColumnCount(); j++) {
                 this.setValue(i, j, this.getValue(i, j) * c);
+            }
+        }
+        return this;
+    }
+
+    public Matrix mulLikeSum(Matrix m) {
+        if (getRowCount() != m.getRowCount() || getColumnCount() != m.getColumnCount()) {
+            throw new MatrixException("Incorrect matrix sizes");
+        }
+        for (int i = 0; i < getRowCount(); i++) {
+            for (int j = 0; j < getColumnCount(); j++) {
+                setValue(i, j, getValue(i, j) * m.getValue(i, j));
             }
         }
         return this;

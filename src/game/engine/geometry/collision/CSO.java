@@ -11,16 +11,26 @@ public class CSO extends ConvexPolygon {
     private CSOEdge[] csoEdges = null;
 
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
-        createCSOEdges(p2, p1);
-//        vertices = new Matrix(2, csoEdges.length);
-        for (int i = 0; i < csoEdges.length; i++) {
+        createCSO(p1, p2);
+    }
 
+    private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
+        createCSOEdges(p1, p2);
+        verticesCount = csoEdges.length;
+        vertices = new Matrix[csoEdges.length];
+        vertices[0] = Matrix.createCoords(0f, 0f);
+        for (int i = 1; i < csoEdges.length; i++) {
+            vertices[i] = Matrix.getLinearCombination(csoEdges[i].getVectorCoords(), vertices[i - 1], 1, 1);
         }
+        calculateOuterRectangleBorders();
+        setCenterOfMass(Matrix.getLinearCombination(rightTopPoint, Matrix.getLinearCombination(p1.getRightTopPoint(), p2.getRightTopPoint(), 1, 1), -1, 1));
+        setCenterOfMass(Matrix.getLinearCombination(centerOfMass, Matrix.createCoords(300f, 300f), 1, 1));
     }
 
     private void createCSOEdges(ConvexPolygon p1, ConvexPolygon p2) {
         Map<Angle, CSOEdge> sortedEdgesMap = new TreeMap<Angle, CSOEdge>();
-        float[][] coeffs = {{1f, -1f}, {-1f, 1f}};
+//        Matrix[] coeffs = {Matrix.createCoords(1f, 1f), Matrix.createCoords(-1f, 1f)};
+        float coeffs[][] = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
             for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {

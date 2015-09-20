@@ -22,6 +22,14 @@ public class ConvexPolygon implements Drawable, Movable {
         return verticesCount;
     }
 
+    public Matrix getRightTopPoint() {
+        return new Matrix(rightTopPoint);
+    }
+
+    public Matrix getLeftBottomPoint() {
+        return new Matrix(leftBottomPoint);
+    }
+
     public ConvexPolygon(float[] x, float[] y, int verticesCount) {
         this.verticesCount = verticesCount;
         initialVertices = new Matrix[verticesCount];
@@ -35,6 +43,10 @@ public class ConvexPolygon implements Drawable, Movable {
 
     public void setCenterOfMass(float x, float y) {
         centerOfMass.setCoords(x, y);
+    }
+
+    public void setCenterOfMass(Matrix centerOfMass) {
+        this.centerOfMass = new Matrix(centerOfMass);
     }
 
     public Matrix getCenterOfMass() {
@@ -99,7 +111,7 @@ public class ConvexPolygon implements Drawable, Movable {
         calculateOuterRectangleBorders();
     }
 
-    private void calculateOuterRectangleBorders() {
+    protected void calculateOuterRectangleBorders() {
         Matrix rightTopPoint = Matrix.createCoords(Float.MIN_VALUE, Float.MIN_VALUE);
         Matrix leftBottomPoint = Matrix.createCoords(Float.MAX_VALUE, Float.MAX_VALUE);
         for (int i = 0; i < verticesCount; i++) {
@@ -130,7 +142,13 @@ public class ConvexPolygon implements Drawable, Movable {
 
     @Override
     public void draw(DrawContext drawContext) {
+
+//        for (int i = 0; i < verticesCount; i++) {
+//            Matrix realCoords = getRealCoords(i);
+//            drawContext.drawCircle(realCoords.getValue(0), realCoords.getValue(1), 4);
+//        }
+
         drawContext.drawPolygon(getRealCoords());
-        drawRectangle(drawContext);
+//        drawRectangle(drawContext);
     }
 }
