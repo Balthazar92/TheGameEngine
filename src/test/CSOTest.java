@@ -22,9 +22,12 @@ public class CSOTest {
         Thread renderThread = new Thread(gameField);
         renderThread.start();
 
-        for (ConvexPolygon gameObject : gameObjects) {
-            gameObject.rotate(0.2f);
-        }
+//        gameObjects.get(0).rotate(0.2f);
+//        gameObjects.get(1).rotate(-0.2f);
+
+//        for (ConvexPolygon gameObject : gameObjects) {
+//            gameObject.rotate(0.2f);
+//        }
 
         new CSO(gameObjects.get(0), gameObjects.get(1));
 

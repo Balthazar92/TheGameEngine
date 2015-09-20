@@ -46,8 +46,9 @@ public class Matrix implements Cloneable {
         return matrix;
     }
 
-    public void transpose() {
+    public Matrix transpose() {
         transposed = !transposed;
+        return this;
     }
 
     public int getRowCount() {

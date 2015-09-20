@@ -25,13 +25,13 @@ public class SimpleGameContextImpl extends JFrame implements DrawContext {
     }
 
     @Override
-    public void drawPolygon(Matrix coords) {
-        int coordsCount = coords.getColumnCount();
+    public void drawPolygon(Matrix[] coords) {
+        int coordsCount = coords.length;
         int[] xPoints = new int[coordsCount];
         int[] yPoints = new int[coordsCount];
         for (int i = 0; i < coordsCount; i++) {
-            xPoints[i] = (int) coords.getValue(0, i);
-            yPoints[i] = (int) coords.getValue(1, i);
+            xPoints[i] = (int) coords[i].getValue(0);
+            yPoints[i] = (int) coords[i].getValue(1);
         }
         currGraphics.drawPolygon(xPoints, yPoints, 4);
     }

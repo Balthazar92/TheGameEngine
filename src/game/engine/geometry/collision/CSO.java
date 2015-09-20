@@ -4,35 +4,45 @@ import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class CSO extends ConvexPolygon {
 
     private CSOEdge[] csoEdges = null;
 
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
-        Map<Angle, CSOEdge> sortedEdges = new TreeMap<Angle, CSOEdge>();
+        createCSOEdges(p2, p1);
+//        vertices = new Matrix(2, csoEdges.length);
+        for (int i = 0; i < csoEdges.length; i++) {
+
+        }
+    }
+
+    private void createCSOEdges(ConvexPolygon p1, ConvexPolygon p2) {
+        Map<Angle, CSOEdge> sortedEdgesMap = new TreeMap<Angle, CSOEdge>();
+        float[][] coeffs = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
         for (int polygonNumber = 0; polygonNumber < ps.length; polygonNumber++) {
             for (int vertexNumber = 0; vertexNumber < ps[polygonNumber].getVerticesCount(); vertexNumber++) {
+
                 int nextVertexNumber = vertexNumber + 1 == ps[polygonNumber].getVerticesCount() ? 0 : vertexNumber + 1;
                 Matrix vectorCoords = ps[polygonNumber].getCoords(nextVertexNumber)
-                        .applyLinearCombination(ps[polygonNumber].getCoords(vertexNumber), 1, -1);
+                        .applyLinearCombination(ps[polygonNumber].getCoords(vertexNumber), coeffs[polygonNumber][0], coeffs[polygonNumber][1]);
+
                 Angle angle = new Angle(vectorCoords);
-                CSOEdge csoEdge = sortedEdges.get(angle);
+                CSOEdge csoEdge = sortedEdgesMap.get(angle);
                 if (csoEdge == null) {
-                    sortedEdges.put(angle, new CSOEdge(vectorCoords, polygonNumber, vertexNumber));
+                    sortedEdgesMap.put(angle, new CSOEdge(vectorCoords, polygonNumber, vertexNumber));
                 } else {
                     csoEdge.addEdge(vectorCoords, polygonNumber, vertexNumber);
                 }
+
             }
         }
-        csoEdges = new CSOEdge[sortedEdges.size()];
+
+        csoEdges = new CSOEdge[sortedEdgesMap.size()];
         int count = 0;
-        for (CSOEdge edge : sortedEdges.values()) {
+        for (CSOEdge edge : sortedEdgesMap.values()) {
             csoEdges[count++] = edge;
         }
     }

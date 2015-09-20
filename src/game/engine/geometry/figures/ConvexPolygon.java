@@ -1,14 +1,14 @@
 package game.engine.geometry.figures;
 
-import com.sun.prism.image.Coords;
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
 import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements Drawable, Movable {
+    public static final float doublePI = (float) (2.0 * Math.PI);
     protected int verticesCount;
-    protected Matrix initialVertices;
-    protected Matrix vertices;
+    protected Matrix[] initialVertices;
+    protected Matrix[] vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
     protected float angle;
     protected Matrix rightTopPoint = Matrix.createCoords(0, 0);
@@ -24,17 +24,13 @@ public class ConvexPolygon implements Drawable, Movable {
 
     public ConvexPolygon(float[] x, float[] y, int verticesCount) {
         this.verticesCount = verticesCount;
-        initialVertices = new Matrix(2, verticesCount);
+        initialVertices = new Matrix[verticesCount];
+        vertices = new Matrix[verticesCount];
         for (int i = 0; i < verticesCount; i++) {
-            initialVertices.setValue(0, i, x[i]);
-            initialVertices.setValue(1, i, y[i]);
+            initialVertices[i] = Matrix.createCoords(x[i], y[i]);
+            vertices[i] = Matrix.createCoords(x[i], y[i]);
         }
-
-        try {
-            vertices = initialVertices.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        calculateOuterRectangleBorders();
     }
 
     public void setCenterOfMass(float x, float y) {
@@ -42,7 +38,7 @@ public class ConvexPolygon implements Drawable, Movable {
     }
 
     public Matrix getCenterOfMass() {
-        return centerOfMass;
+        return new Matrix(centerOfMass);
     }
 
     public void setAngle(float angle) {
@@ -53,26 +49,24 @@ public class ConvexPolygon implements Drawable, Movable {
         return angle;
     }
 
-    public Matrix getRealCoords() {
-        Matrix realCoords = new Matrix(vertices.getRowCount(), vertices.getColumnCount());
-        for (int i = 0; i < vertices.getRowCount(); i++) {
-            for (int j = 0; j < vertices.getColumnCount(); j++) {
-                realCoords.setValue(i, j, vertices.getValue(i, j) + centerOfMass.getValue(i));
-            }
+    public Matrix[] getRealCoords() {
+        Matrix[] realCoords = new Matrix[verticesCount];
+        for (int i = 0; i < verticesCount; i++) {
+            realCoords[i] = getRealCoords(i);
         }
         return realCoords;
+    }
+
+    public Matrix getRealCoords(int vertexNumber) {
+        return getRealCoords(vertices[vertexNumber]);
     }
 
     public Matrix getRealCoords(Matrix coords) {
         return Matrix.getLinearCombination(coords, centerOfMass, 1, 1);
     }
 
-    public Matrix getRealCoords(int index) {
-        return getCoords(index).applyLinearCombination(centerOfMass, 1, 1);
-    }
-
     public Matrix getCoords(int vertexNum) {
-        return Matrix.createCoords(vertices.getValue(0, vertexNum), vertices.getValue(1, vertexNum));
+        return new Matrix(vertices[vertexNum]);
     }
 
     public ConvexPolygon(float x, float y) {
@@ -92,22 +86,40 @@ public class ConvexPolygon implements Drawable, Movable {
     @Override
     public void rotate(float dAngle) {
         angle += dAngle;
-        vertices = Matrix.mul(Matrix.getRotateMatrix(angle), initialVertices);
-        rightTopPoint.setCoords(vertices.getValue(0, 0), vertices.getValue(1, 0));
-        leftBottomPoint.setCoords(vertices.getValue(0, 0), vertices.getValue(1, 0));
-        for (int i = 1; i < verticesCount; i++) {
-            float x = vertices.getValue(0, i);
-            float y = vertices.getValue(1, i);
+
+        if (angle < 0f) {
+            angle += doublePI;
+        } else if (angle > doublePI) {
+            angle -= doublePI;
+        }
+
+        for (int i = 0; i < verticesCount; i++) {
+            vertices[i] = Matrix.mul(Matrix.getRotateMatrix(angle), initialVertices[i]);
+        }
+        calculateOuterRectangleBorders();
+    }
+
+    private void calculateOuterRectangleBorders() {
+        Matrix rightTopPoint = Matrix.createCoords(Float.MIN_VALUE, Float.MIN_VALUE);
+        Matrix leftBottomPoint = Matrix.createCoords(Float.MAX_VALUE, Float.MAX_VALUE);
+        for (int i = 0; i < verticesCount; i++) {
+            float x = vertices[i].getValue(0);
+            float y = vertices[i].getValue(1);
             if (x > rightTopPoint.getValue(0)) {
                 rightTopPoint.setValue(0, x);
-            } else if (y > rightTopPoint.getValue(1)) {
+            }
+            if (y > rightTopPoint.getValue(1)) {
                 rightTopPoint.setValue(1, y);
-            } else if (x < leftBottomPoint.getValue(0)) {
+            }
+            if (x < leftBottomPoint.getValue(0)) {
                 leftBottomPoint.setValue(0, x);
-            } else if (y < leftBottomPoint.getValue(1)) {
+            }
+            if (y < leftBottomPoint.getValue(1)) {
                 leftBottomPoint.setValue(1, y);
             }
         }
+        this.rightTopPoint = rightTopPoint;
+        this.leftBottomPoint = leftBottomPoint;
     }
 
     private void drawRectangle(DrawContext drawContext) {
