@@ -32,8 +32,7 @@ public class CSO extends ConvexPolygon {
             vertices[i] = Matrix.getLinearCombination(csoEdges[i].getVectorCoords(), vertices[i - 1], 1, 1);
         }
         calculateOuterRectangleBorders();
-        setCenterOfMass(Matrix.getLinearCombination(rightTopPoint, Matrix.getLinearCombination(p1.getRightTopPoint(), p2.getRightTopPoint(), 1, 1), -1, 1));
-//        setCenterOfMass(Matrix.getLinearCombination(centerOfMass, Matrix.createCoords(300f, 300f), 1, 1));
+        setCenterOfMass(Matrix.getLinearCombination(rightTopPoint, Matrix.getLinearCombination(p1.getRightTopPoint(), p2.getLeftBottomPoint().mul(-1f), 1f, 1f), -1f, 1f));
         calculateLines();
     }
 
