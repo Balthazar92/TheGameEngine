@@ -21,7 +21,7 @@ public class Line {
         return answer;
     }
 
-    public float findDistanceToPoint(Matrix point) {
+    public float getDistanceToPoint(Matrix point) {
         return Math.abs(getValueOfExpression(point)) / sqrt;
     }
 }

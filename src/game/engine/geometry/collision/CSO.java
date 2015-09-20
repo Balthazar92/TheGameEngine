@@ -8,19 +8,11 @@ import java.util.*;
 
 public class CSO extends ConvexPolygon {
 
-    private CSOEdge[] csoEdges = null;
-    private Line[] lines = null;
+    private CSOEdge[] csoEdges;
+    private Line[] lines;
 
     public CSO(ConvexPolygon p1, ConvexPolygon p2) {
         createCSO(p1, p2);
-    }
-
-    private void calculateLines() {
-        lines = new Line[verticesCount];
-        for (int vertexNumber = 0; vertexNumber < verticesCount; vertexNumber++) {
-            int nextVertexNumber = vertexNumber + 1 == verticesCount ? 0 : vertexNumber + 1;
-            lines[vertexNumber] = new Line(getRealCoords(vertexNumber), getRealCoords(nextVertexNumber));
-        }
     }
 
     private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
@@ -62,6 +54,14 @@ public class CSO extends ConvexPolygon {
         int count = 0;
         for (CSOEdge edge : sortedEdgesMap.values()) {
             csoEdges[count++] = edge;
+        }
+    }
+
+    private void calculateLines() {
+        lines = new Line[verticesCount];
+        for (int vertexNumber = 0; vertexNumber < verticesCount; vertexNumber++) {
+            int nextVertexNumber = vertexNumber + 1 == verticesCount ? 0 : vertexNumber + 1;
+            lines[vertexNumber] = new Line(getRealCoords(vertexNumber), getRealCoords(nextVertexNumber));
         }
     }
 
