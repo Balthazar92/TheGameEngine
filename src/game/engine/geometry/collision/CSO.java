@@ -15,6 +15,10 @@ public class CSO extends ConvexPolygon {
         createCSO(p1, p2);
     }
 
+    public Line getLine(int lineNumber) {
+        return lines[lineNumber];
+    }
+
     private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
         createCSOEdges(p1, p2);
         verticesCount = csoEdges.length;

@@ -7,8 +7,8 @@ public class Line {
     private float sqrt;
 
     public Line(Matrix point1, Matrix point2) {
-        coeffs[0] = point2.get(0) - point2.get(1);
-        coeffs[1] = point1.get(1) - point1.get(0);
+        coeffs[0] = point1.get(1) - point2.get(1);
+        coeffs[1] = point2.get(0) - point1.get(0);
         coeffs[2] = point1.get(0) * point2.get(1) - point1.get(1) * point2.get(0);
         sqrt = (float) Math.sqrt(coeffs[0] * coeffs[0] + coeffs[1] * coeffs[1]);
     }

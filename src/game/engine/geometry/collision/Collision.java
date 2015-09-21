@@ -27,6 +27,10 @@ public class Collision implements Drawable {
     private void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
         cso = new CSO(p1, p2);
         point = p1.getCenterOfMass().applyLinearCombination(p2.getCenterOfMass(), -1f, 1f);
+
+        for (int i = 0; i < cso.getVerticesCount(); i++) {
+            System.out.println(cso.getLine(i).getValueOfExpression(point) + " " + cso.getLine(i).getDistanceToPoint(point));
+        }
     }
 
     @Override
