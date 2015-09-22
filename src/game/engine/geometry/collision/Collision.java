@@ -12,6 +12,10 @@ public class Collision implements Drawable {
     private Matrix point;
     private CSO cso;
 
+    public Collision() {
+
+    }
+
     public Collision(ConvexPolygon p1, ConvexPolygon p2) {
         calculateCollision(p1, p2);
     }
@@ -24,12 +28,21 @@ public class Collision implements Drawable {
         return objectsArePenetrated;
     }
 
-    private void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
+    public boolean checkBroadPhase(ConvexPolygon p1, ConvexPolygon p2) {
+        return true;
+    }
+
+    public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
+        objectsArePenetrated = false;
+
+        if (!checkBroadPhase(p1, p2)) {
+            return;
+        }
+
         cso = new CSO(p1, p2);
-        point = p1.getCenterOfMass().applyLinearCombination(p2.getCenterOfMass(), -1f, 1f);
+        point = p2.getCenterOfMass().applyLinearCombination(p1.getCenterOfMass(), 1f, -1f);
 
         int theNearestVertexNumber = 0;
-        objectsArePenetrated = false;
         penetrationDepth = cso.getLine(0).getDistanceToPoint(point);
 
         for (int i = 0; i < cso.getVerticesCount(); i++) {
@@ -45,7 +58,8 @@ public class Collision implements Drawable {
         objectsArePenetrated = true;
         normal = cso.getLine(theNearestVertexNumber).getNormal();
 
-
+        System.out.println(theNearestVertexNumber);
+        System.out.println(normal.get(0) + " " + normal.get(1));
     }
 
     @Override

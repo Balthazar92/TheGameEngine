@@ -2,10 +2,8 @@ package test;
 
 import game.engine.gamefield.Drawable;
 import game.engine.gamefield.GameField;
-import game.engine.geometry.collision.CSO;
 import game.engine.geometry.collision.Collision;
 import game.engine.geometry.figures.ConvexPolygon;
-import game.engine.geometry.figures.ShapeFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +23,8 @@ public class CollisionTest {
         gameObjects.add(new ConvexPolygon(xs2, ys2, 3));
         ((ConvexPolygon) gameObjects.get(1)).rotate(-0.2f);
         ((ConvexPolygon) gameObjects.get(0)).move(200f, 200f);
-        ((ConvexPolygon) gameObjects.get(1)).move(160f, 290f);
+        ((ConvexPolygon) gameObjects.get(1)).move(180f, 100f);
         gameObjects.add(new Collision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1)));
-
-
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
