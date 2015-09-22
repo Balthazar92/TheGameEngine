@@ -6,9 +6,9 @@ import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 
 public class Collision implements Drawable {
-
     private boolean objectsArePenetrated = false;
     private float penetrationDepth;
+    private Matrix normal;
     private Matrix point;
     private CSO cso;
 
@@ -28,9 +28,24 @@ public class Collision implements Drawable {
         cso = new CSO(p1, p2);
         point = p1.getCenterOfMass().applyLinearCombination(p2.getCenterOfMass(), -1f, 1f);
 
+        int theNearestVertexNumber = 0;
+        objectsArePenetrated = false;
+        penetrationDepth = cso.getLine(0).getDistanceToPoint(point);
+
         for (int i = 0; i < cso.getVerticesCount(); i++) {
-            System.out.println(cso.getLine(i).getValueOfExpression(point) + " " + cso.getLine(i).getDistanceToPoint(point));
+            float distance = cso.getLine(i).getDistanceToPoint(point);
+            if (distance < 0) {
+                return;
+            } else if (penetrationDepth > distance) {
+                penetrationDepth = distance;
+                theNearestVertexNumber = i;
+            }
         }
+
+        objectsArePenetrated = true;
+        normal = cso.getLine(theNearestVertexNumber).getNormal();
+
+
     }
 
     @Override

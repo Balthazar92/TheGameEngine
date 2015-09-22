@@ -22,6 +22,10 @@ public class Line {
     }
 
     public float getDistanceToPoint(Matrix point) {
-        return Math.abs(getValueOfExpression(point)) / sqrt;
+        return getValueOfExpression(point) / sqrt;
+    }
+
+    public Matrix getNormal() {
+        return Matrix.createCoords(coeffs[0] / sqrt, coeffs[1] / sqrt);
     }
 }
