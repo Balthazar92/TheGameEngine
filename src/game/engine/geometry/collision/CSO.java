@@ -19,6 +19,10 @@ public class CSO extends ConvexPolygon {
         return lines[lineNumber];
     }
 
+    public List<Pair<Integer, Integer>> getCSOEdge(int edgeNumber) {
+        return csoEdges[edgeNumber].getEdges();
+    }
+
     private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
         createCSOEdges(p1, p2);
         verticesCount = csoEdges.length;
@@ -101,7 +105,7 @@ public class CSO extends ConvexPolygon {
 
     private static class CSOEdge {
         private Matrix vectorCoords = Matrix.createCoords(0, 0);
-        List<Pair<Integer, Integer>> edges = new LinkedList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> edges = new ArrayList<Pair<Integer, Integer>>();
 
         public CSOEdge(Matrix vectorCoords, int polygonNumber, int vertexNumber) {
             addEdge(vectorCoords, polygonNumber, vertexNumber);

@@ -24,7 +24,12 @@ public class CollisionTest {
         ((ConvexPolygon) gameObjects.get(1)).rotate(-0.2f);
         ((ConvexPolygon) gameObjects.get(0)).move(200f, 200f);
         ((ConvexPolygon) gameObjects.get(1)).move(180f, 100f);
-        gameObjects.add(new Collision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1)));
+
+        try {
+            gameObjects.add(new Collision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

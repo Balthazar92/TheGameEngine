@@ -4,6 +4,9 @@ import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
+import game.engine.myutils.Pair;
+
+import java.util.List;
 
 public class Collision implements Drawable {
     private boolean objectsArePenetrated = false;
@@ -16,7 +19,7 @@ public class Collision implements Drawable {
 
     }
 
-    public Collision(ConvexPolygon p1, ConvexPolygon p2) {
+    public Collision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
         calculateCollision(p1, p2);
     }
 
@@ -32,7 +35,7 @@ public class Collision implements Drawable {
         return true;
     }
 
-    public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
+    public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
         objectsArePenetrated = false;
 
         if (!checkBroadPhase(p1, p2)) {
@@ -58,8 +61,27 @@ public class Collision implements Drawable {
         objectsArePenetrated = true;
         normal = cso.getLine(theNearestVertexNumber).getNormal();
 
+        List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
+
+        switch (csoEdge.size()) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                throw new Exception("CSOEdge must contains one or two edges from convex polygons.");
+        }
+
         System.out.println(theNearestVertexNumber);
         System.out.println(normal.get(0) + " " + normal.get(1));
+    }
+
+    private void calculateEdgeToEdgeContact() {
+
+    }
+
+    private void calculateEdgeToPointContact() {
+
     }
 
     @Override
