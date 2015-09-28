@@ -23,7 +23,7 @@ public class CollisionTest {
         gameObjects.add(new ConvexPolygon(xs2, ys2, 3));
         ((ConvexPolygon) gameObjects.get(1)).rotate(-0.2f);
         ((ConvexPolygon) gameObjects.get(0)).move(200f, 200f);
-        ((ConvexPolygon) gameObjects.get(1)).move(180f, 100f);
+        ((ConvexPolygon) gameObjects.get(1)).move(180f, 250f);
 
         try {
             gameObjects.add(new Collision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1)));

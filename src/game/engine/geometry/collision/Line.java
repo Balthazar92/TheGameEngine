@@ -28,4 +28,18 @@ public class Line {
     public Matrix getNormal() {
         return Matrix.createCoords(coeffs[0] / sqrt, coeffs[1] / sqrt);
     }
+
+    public static float getMainDeterminant(Line l1, Line l2) {
+        return l1.coeffs[0] * l2.coeffs[1] - l1.coeffs[1] * l2.coeffs[0];
+    }
+
+    public static Matrix getMutualPoint(Line l1, Line l2) throws Exception {
+        float delta = getMainDeterminant(l1, l2);
+        if (delta == 0f) {
+            throw new Exception("Lines are parallel, there is no a mutual point.");
+        }
+        float delta1 = l1.coeffs[2] * l2.coeffs[1] - l1.coeffs[1] * l2.coeffs[2];
+        float delta2 = l1.coeffs[0] * l2.coeffs[2] - l1.coeffs[2] * l2.coeffs[0];
+        return Matrix.createCoords(delta1 / delta, delta2 / delta);
+    }
 }
