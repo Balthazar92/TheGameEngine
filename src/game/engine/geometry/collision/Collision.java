@@ -16,6 +16,8 @@ public class Collision implements Drawable {
     private Matrix point;
     private CSO cso;
     private Matrix mutualPoint;
+    private Matrix firstVector = Matrix.createCoords(0.0f, 0.0f);
+    private Matrix secondVector = Matrix.createCoords(0.0f, 0.0f);
 
     public Collision() {
 
@@ -69,11 +71,7 @@ public class Collision implements Drawable {
 
         switch (csoEdge.size()) {
             case 1:
-                calculateEdgeToPointContact(csoEdge.get(0).a,
-                        csoEdge.get(0).b,
-                        point,
-                        ps,
-                        cso.getLine(theNearestVertexNumber));
+                calculateEdgeToPointContact(cso, theNearestVertexNumber, point, ps);
                 break;
             case 2:
                 break;
@@ -85,18 +83,21 @@ public class Collision implements Drawable {
         System.out.println(normal.get(0) + " " + normal.get(1));
     }
 
-    private void calculateEdgeToPointContact(
-            int polygonNumber,
-            int vertexNumber,
-            Matrix point,
-            ConvexPolygon[] ps,
-            Line csoLine
-    ) {
+    private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
         Line perpendicularLine = new Line(point, (new Matrix(point)).applyLinearCombination(normal, 1, 1));
-        try {
-            mutualPoint = Line.getMutualPoint(perpendicularLine, csoLine);
-        } catch (Exception e) {
-            e.printStackTrace();
+        mutualPoint = Line.getMutualPoint(perpendicularLine, cso.getLine(theNearestVertexNumber));
+        List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
+
+        if (csoEdge.get(0).a == 0) {
+            Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber);
+            Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f);
+            firstVector = Matrix.getLinearCombination(ps[0].getRealCoords(csoEdge.get(0).b), d, 1f, 1f);
+            secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+        } else {
+            Matrix csoPoint = cso.getRealCoords((theNearestVertexNumber + 1) % cso.getVerticesCount());
+            Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f);
+            firstVector = Matrix.getLinearCombination(ps[1].getRealCoords((csoEdge.get(0).b + 1) % ps[1].getVerticesCount()), d, 1f, -1f);
+            secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, -1f);
         }
     }
 
@@ -115,8 +116,13 @@ public class Collision implements Drawable {
 
         if (objectsArePenetrated) {
             mutualPoint.applyLinearCombination(d, 1f, 1f);
-            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 4f);
+            point.applyLinearCombination(d, 1f, 1f);
+            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
+            drawContext.drawCircle(point.get(0), point.get(1), 2f);
+            drawContext.drawCircle(firstVector.get(0), firstVector.get(1), 2f);
+            drawContext.drawCircle(secondVector.get(0), secondVector.get(1), 2f);
             mutualPoint.applyLinearCombination(d, 1f, -1f);
+            point.applyLinearCombination(d, 1f, -1f);
 
 //            Matrix shiftPoint = Matrix.getLinearCombination(point, d, 1f, 1f);
 //            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);

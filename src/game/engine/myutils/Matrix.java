@@ -120,7 +120,7 @@ public class Matrix implements Cloneable {
         return mulMatrix;
     }
 
-    public static Matrix mul(Matrix a, float c) {
+    public static Matrix getMul(Matrix a, float c) {
         Matrix multMatrix = new Matrix(a.getRowCount(), a.getColumnCount());
         for (int i = 0; i < multMatrix.getRowCount(); i++) {
             for (int j = 0; j < multMatrix.getColumnCount(); j++) {

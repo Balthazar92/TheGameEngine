@@ -33,13 +33,13 @@ public class Line {
         return l1.coeffs[0] * l2.coeffs[1] - l1.coeffs[1] * l2.coeffs[0];
     }
 
-    public static Matrix getMutualPoint(Line l1, Line l2) throws Exception {
+    public static Matrix getMutualPoint(Line l1, Line l2) {
         float delta = getMainDeterminant(l1, l2);
         if (delta == 0f) {
-            throw new Exception("Lines are parallel, there is no a mutual point.");
+            throw new RuntimeException("Lines are parallel, there is no the mutual point.");
         }
-        float delta1 = l1.coeffs[2] * l2.coeffs[1] - l1.coeffs[1] * l2.coeffs[2];
-        float delta2 = l1.coeffs[0] * l2.coeffs[2] - l1.coeffs[2] * l2.coeffs[0];
+        float delta1 = - l1.coeffs[2] * l2.coeffs[1] + l1.coeffs[1] * l2.coeffs[2];
+        float delta2 = - l1.coeffs[0] * l2.coeffs[2] + l1.coeffs[2] * l2.coeffs[0];
         return Matrix.createCoords(delta1 / delta, delta2 / delta);
     }
 }
